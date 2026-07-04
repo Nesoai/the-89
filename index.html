@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The 89 — the complete merged canon</title>
+<meta name="description" content="The 89: study the complete merged canon — Tanakh, Apocrypha, and the Ethiopian 81 — in binge-worthy lessons, a browsable 89-book library, streaks, XP, and Scroll Trials.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='44' fill='%23110c07'/><text x='50' y='66' font-size='46' text-anchor='middle'>📜</text></svg>">
+<meta name="theme-color" content="#110c07">
+<style>
+:root{
+  --bg:#110c07; --ink:#f2e9d6; --dim:#bcae91; --faint:#7d7159;
+  --a1:#e0b25e; --a2:#c96f43; --a3:#9c4040;
+  --card:rgba(240,224,192,.05); --line:rgba(224,178,94,.22);
+  --r:20px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,sans-serif;font-size:16.5px;line-height:1.6;min-height:100vh;overflow-x:hidden}
+h1,h2,h3,h4{font-family:Fraunces,serif;font-weight:600;line-height:1.15;margin:0}
+button{font-family:inherit;cursor:pointer}
+::selection{background:rgba(224,178,94,.35)}
+
+/* ---- ambient aurora ---- */
+.blob{position:fixed;border-radius:50%;filter:blur(110px);opacity:.22;z-index:0;pointer-events:none;animation:blobdrift 26s ease-in-out infinite alternate}
+#b1{width:44vw;height:44vw;background:var(--a1);top:-14vw;left:-10vw}
+#b2{width:38vw;height:38vw;background:var(--a2);top:24vh;right:-12vw;animation-delay:-9s}
+#b3{width:30vw;height:30vw;background:var(--a3);bottom:-12vw;left:22vw;animation-delay:-17s;opacity:.2}
+@keyframes blobdrift{from{transform:translate(0,0) scale(1)}to{transform:translate(6vw,4vh) scale(1.12)}}
+#grain{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.05;background-image:radial-gradient(rgba(255,255,255,.7) .6px,transparent .6px);background-size:3px 3px}
+
+/* ---- shell ---- */
+#app{position:relative;z-index:1;max-width:980px;margin:0 auto;padding:18px 20px 90px}
+header{display:flex;align-items:center;gap:12px;padding:6px 0 22px}
+#logo{font-family:Fraunces,serif;font-size:24px;font-weight:700;letter-spacing:.5px;cursor:pointer;background:linear-gradient(90deg,var(--a1),var(--a2),var(--a3));-webkit-background-clip:text;background-clip:text;color:transparent}
+.spacer{flex:1}
+.chip{display:flex;align-items:center;gap:7px;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:7px 14px;font-size:14px;font-weight:600;backdrop-filter:blur(10px);white-space:nowrap}
+.chip b{color:var(--ink)}
+.chip .sub{color:var(--dim);font-weight:500}
+#sndBtn{background:var(--card);border:1px solid var(--line);border-radius:999px;width:38px;height:38px;color:var(--dim);font-size:16px;transition:.2s}
+#sndBtn:hover{color:var(--ink);border-color:rgba(255,255,255,.25)}
+
+.view{display:none;animation:fadeup .45s ease}
+.view.on{display:block}
+@keyframes fadeup{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+/* ---- cards & buttons ---- */
+.glass{background:var(--card);border:1px solid var(--line);border-radius:var(--r);backdrop-filter:blur(14px);transition:transform .25s ease,border-color .25s ease,box-shadow .25s ease}
+.glass.hover:hover{transform:translateY(-4px);border-color:rgba(255,255,255,.22);box-shadow:0 18px 40px -18px rgba(0,0,0,.7)}
+.btn{border:none;border-radius:14px;padding:13px 24px;font-size:15.5px;font-weight:600;color:#171009;background:linear-gradient(92deg,var(--a1),var(--a2));box-shadow:0 8px 26px -8px rgba(201,111,67,.5);transition:transform .18s,box-shadow .18s,filter .18s}
+.btn:hover{transform:translateY(-2px);filter:brightness(1.1);box-shadow:0 14px 34px -8px rgba(201,111,67,.65)}
+.btn:active{transform:translateY(0)}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line);box-shadow:none}
+.btn.ghost:hover{border-color:rgba(255,255,255,.3)}
+.btn.big{padding:16px 30px;font-size:17px;border-radius:16px}
+.tag{display:inline-block;font-size:12px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;color:var(--dim);border:1px solid var(--line);border-radius:999px;padding:4px 12px}
+
+/* ---- home ---- */
+.hero{padding:30px 30px 26px;margin-bottom:22px;position:relative;overflow:hidden}
+.hero:before{content:"";position:absolute;inset:0;background:linear-gradient(120deg,rgba(224,178,94,.12),rgba(201,111,67,.1) 55%,rgba(156,64,64,.08));pointer-events:none}
+.hero h1{font-size:clamp(28px,4.6vw,42px);margin:10px 0 8px}
+.hero p{color:var(--dim);max-width:56ch;margin:0 0 20px}
+.heroRow{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
+.pathcard{padding:22px;cursor:pointer;position:relative}
+.pathcard .pemoji{font-size:30px}
+.pathcard h3{font-size:20px;margin:10px 0 6px}
+.pathcard p{color:var(--dim);font-size:14.5px;margin:0 0 16px;min-height:3em}
+.meta{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--dim)}
+.ring{--p:0;width:44px;height:44px;border-radius:50%;background:conic-gradient(var(--rc,var(--a1)) calc(var(--p)*1%),rgba(255,255,255,.08) 0);display:grid;place-items:center;flex:none}
+.ring i{width:34px;height:34px;border-radius:50%;background:#1d150c;display:grid;place-items:center;font-style:normal;font-size:11.5px;font-weight:700}
+.rowcards{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;margin-top:16px}
+.featurecard{padding:22px;cursor:pointer}
+.featurecard h3{font-size:19px;margin:8px 0 4px}
+.featurecard p{color:var(--dim);font-size:14.5px;margin:0}
+.sectionTitle{font-size:22px;margin:34px 0 14px;display:flex;align-items:center;gap:10px}
+.sectionTitle:after{content:"";flex:1;height:1px;background:var(--line)}
+
+/* ---- path view ---- */
+.back{background:none;border:none;color:var(--dim);font-size:15px;font-weight:600;padding:0;margin-bottom:18px;display:inline-flex;align-items:center;gap:6px}
+.back:hover{color:var(--ink)}
+.pathhead{display:flex;gap:18px;align-items:center;margin-bottom:22px;flex-wrap:wrap}
+.pathhead .pemoji{font-size:44px}
+.pathhead h2{font-size:clamp(24px,4vw,34px)}
+.pathhead p{color:var(--dim);margin:4px 0 0;max-width:60ch}
+.lessonrow{display:flex;align-items:center;gap:16px;padding:18px 20px;margin-bottom:12px;cursor:pointer}
+.lessonrow .num{width:38px;height:38px;border-radius:12px;background:rgba(255,255,255,.06);border:1px solid var(--line);display:grid;place-items:center;font-weight:700;font-size:15px;flex:none}
+.lessonrow.done .num{background:linear-gradient(135deg,var(--a1),var(--a2));color:#0a0d18;border:none}
+.lessonrow h4{font-size:17px;font-weight:600;font-family:Inter}
+.lessonrow .lmeta{font-size:13px;color:var(--dim);margin-top:2px}
+.lessonrow .go{margin-left:auto;color:var(--faint);font-size:20px;transition:.2s}
+.lessonrow:hover .go{color:var(--ink);transform:translateX(4px)}
+.nextpill{font-size:11.5px;font-weight:700;letter-spacing:.6px;color:#171009;background:linear-gradient(90deg,var(--a1),var(--a2));border-radius:999px;padding:3px 10px;margin-left:8px;text-transform:uppercase}
+
+/* ---- lesson view ---- */
+.lessonwrap{max-width:720px;margin:0 auto}
+.progressbar{height:5px;border-radius:99px;background:rgba(255,255,255,.08);overflow:hidden;margin:10px 0 26px}
+.progressbar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--a1),var(--a2));border-radius:99px;transition:width .5s cubic-bezier(.22,1,.36,1)}
+.seccard{padding:30px;margin-bottom:16px}
+.seccard h3{font-size:clamp(21px,3.4vw,27px);margin-bottom:12px}
+.seccard p{color:#c9d0e0;margin:0;font-size:16.5px}
+.secfoot{display:flex;gap:10px;margin-top:22px;align-items:center}
+.listen{background:rgba(255,255,255,.06);border:1px solid var(--line);color:var(--dim);border-radius:999px;padding:9px 16px;font-size:13.5px;font-weight:600;transition:.2s}
+.listen:hover{color:var(--ink);border-color:rgba(255,255,255,.3)}
+.qopt{display:block;width:100%;text-align:left;background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:14px;color:var(--ink);padding:15px 18px;font-size:15.5px;font-weight:500;margin-bottom:10px;transition:.18s}
+.qopt:hover{border-color:rgba(255,255,255,.3);transform:translateX(4px)}
+.qopt.right{background:rgba(224,178,94,.16);border-color:var(--a1)}
+.qopt.wrong{background:rgba(156,64,64,.16);border-color:var(--a3);opacity:.75}
+.qfeed{min-height:26px;font-weight:600;font-size:14.5px;margin:4px 0 6px}
+
+/* ---- completion overlay ---- */
+#done{position:fixed;inset:0;z-index:60;display:none;place-items:center;background:rgba(6,8,16,.75);backdrop-filter:blur(6px)}
+#done.on{display:grid}
+#doneCard{max-width:440px;width:92vw;padding:36px 32px;text-align:center;animation:fadeup .4s ease}
+#doneCard .big{font-size:52px}
+#doneCard h2{font-size:26px;margin:10px 0 6px}
+#doneCard p{color:var(--dim);margin:0 0 8px}
+#doneXp{font-family:Fraunces,serif;font-size:34px;font-weight:700;background:linear-gradient(90deg,var(--a1),var(--a2),var(--a3));-webkit-background-clip:text;background-clip:text;color:transparent;margin:6px 0 18px}
+#nextTease{font-size:14px;color:var(--dim);margin:14px 0 6px}
+#nextTease b{color:var(--ink)}
+
+/* ---- arena ---- */
+.arenatop{display:flex;gap:12px;align-items:center;margin-bottom:20px;flex-wrap:wrap}
+.combo{font-family:Fraunces,serif;font-weight:700;font-size:20px;background:linear-gradient(90deg,var(--a2),var(--a3));-webkit-background-clip:text;background-clip:text;color:transparent}
+.combo.hot{animation:pulse .5s ease}
+@keyframes pulse{40%{transform:scale(1.25)}}
+.arenaq{padding:28px;margin-bottom:16px}
+.arenaq h3{font-size:clamp(19px,3vw,24px);font-family:Inter;font-weight:600}
+
+/* ---- studio ---- */
+.breathwrap{display:flex;flex-direction:column;align-items:center;padding:40px 20px}
+#bcircle{width:min(56vw,240px);height:min(56vw,240px);border-radius:50%;background:radial-gradient(circle,rgba(224,178,94,.35),rgba(201,111,67,.2) 60%,transparent 72%);border:1px solid rgba(255,255,255,.18);display:grid;place-items:center;font-family:Fraunces,serif;font-size:21px;transition:transform var(--dur,4s) cubic-bezier(.45,0,.55,1)}
+#bcircle.in{transform:scale(1.45)}
+#bcircle.hold{transform:scale(1.45)}
+#bcircle.out{transform:scale(1)}
+.studioopts{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;width:100%}
+
+footer{margin-top:60px;text-align:center;color:var(--faint);font-size:13px}
+footer a{color:var(--dim)}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="blob" id="b1"></div><div class="blob" id="b2"></div><div class="blob" id="b3"></div>
+<div id="grain"></div>
+<div id="app">
+  <header>
+    <div id="logo">The 89</div>
+    <div class="spacer"></div>
+    <div class="chip" id="streakChip">🔥 <b>0</b><span class="sub">day streak</span></div>
+    <div class="chip" id="xpChip">✦ <b>0</b><span class="sub">Spark</span></div>
+    <button id="sndBtn" title="Sound">🔊</button>
+  </header>
+
+  <div class="view on" id="v-home"></div>
+  <div class="view" id="v-path"></div>
+  <div class="view" id="v-lesson"></div>
+  <div class="view" id="v-arena"></div>
+  <div class="view" id="v-studio"></div>
+  <div class="view" id="v-library"></div>
+
+  <footer>The 89 · a Boundless learning studio · <span id="vtag">v1.0</span><br>
+  A study companion to the merged canon — Tanakh, Apocrypha, and the Ethiopian Orthodox Tewahedo tradition — using the names Yah and Yehoshua HaMashiach.</footer>
+</div>
+
+<div id="done"><div id="doneCard" class="glass">
+  <div class="big" id="doneEmoji">✦</div>
+  <h2 id="doneTitle">Lesson complete</h2>
+  <p id="doneSub"></p>
+  <div id="doneXp">+0 XP</div>
+  <div id="nextTease"></div>
+  <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+    <button class="btn big" id="doneNext">Keep going →</button>
+    <button class="btn ghost" id="doneHome">Home</button>
+  </div>
+</div></div>
+
+<script>
+/* ============ THE 89 — adult learning engine (shared with Lumen) ============ */
+/* DATA_START */
+const SITE={
+  key:'the89.v1', name:'The 89', vtag:'v1.0',
+  heroKicker:'The scroll is open',
+  heroTitle:'Eighty-nine books. One story.',
+  heroSub:'Study the complete merged canon — the Tanakh, the Apocrypha, and the Ethiopian 81 — in five-minute lessons. Walk the grand story, meet the hidden treasures, and test yourself in the Scroll Trials.',
+  levels:[[0,'Seeker'],[150,'Student'],[350,'Scribe'],[700,'Storykeeper'],[1200,'Sage'],[1900,'Elder'],[2800,'Keeper of the 89']],
+  arenaName:'Scroll Trials', arenaDesc:'Ten rapid questions across the whole canon. Build a combo, multiply your XP.',
+  libraryName:'The Library of 89', libraryDesc:'Every book on one shelf — genre, essence, and key figures at a glance.'
+};
+const PATHS=[
+{emoji:'📏', color:'#e0b25e', title:'Canon 101',
+ blurb:'Why Bibles differ — 24, 66, 73, 81 — and how this merged shelf reaches 89.',
+ lessons:[
+ {t:'What Is a Canon?', mins:4, secs:[
+   {h:'The measuring rod',t:'"Canon" comes from a Greek word for a measuring rod: the ruled list of writings a community receives as Scripture. No committee invented it in an afternoon; canons formed over centuries of reading, worship, and debate, as communities recognized which scrolls carried authority among them. A canon is less a fence than a testimony: these are the books that made us who we are.'},
+   {h:'The famous numbers',t:'The Jewish Tanakh counts 24 books. The Protestant Bible counts 66; the Catholic, 73; Eastern Orthodox Bibles, roughly 76 to 79. The Ethiopian Orthodox Tewahedo Church holds the broadest canon in the world: 81 books. Same faithlines, different shelves — and most of the difference is a handful of books plus, surprisingly, arithmetic.'},
+   {h:'Why the counts differ',t:'Two reasons. First, grouping: the Tanakh counts the Twelve Prophets as one book, Samuel, Kings, and Chronicles as one each, and Ezra–Nechemyah together — split them apart and 24 becomes 39. Second, disputed books: the collections called Apocrypha or Deuterocanon, kept by some traditions and set aside by others. Counting, it turns out, is theology.'}],
+  quiz:[
+   {q:'"Canon" originally referred to…',a:'A measuring rod or rule',w:['A type of scroll','A church building']},
+   {q:'The world\u2019s largest biblical canon belongs to…',a:'The Ethiopian Orthodox Tewahedo Church',w:['The Protestant tradition','The Tanakh']},
+   {q:'The Tanakh\u2019s 24 books equal the Protestant 39 because…',a:'The same books are grouped differently',w:['15 books were lost','They are unrelated texts']}]},
+ {t:'The Tanakh', mins:4, secs:[
+   {h:'Torah, Nevi\u2019im, Ketuvim',t:'"Tanakh" is an acronym: Torah (the five books of teaching), Nevi\u2019im (the Prophets — from Yehoshua through the Twelve), and Ketuvim (the Writings — Psalms, wisdom, scrolls, and Chronicles). Three shelves, ranked in traditional weight: the Torah read through every year in synagogue, the Prophets echoing it, the Writings singing around it.'},
+   {h:'A different ending',t:'Order preaches. The Christian Old Testament ends with Malachi\u2019s promise of a coming messenger — a cliffhanger leaning toward the Gospels. The Tanakh ends with 2 Chronicles and Cyrus\u2019s decree: let the exiles go home and rebuild. One arrangement ends in expectation, the other in return. Same books, two closing chords.'},
+   {h:'The text itself',t:'The Tanakh comes to us in Hebrew (with some Aramaic) through the Masoretes — medieval scribes who counted every letter and added vowel markings to lock the pronunciation of an already-ancient text. Their care is why a modern scroll matches fragments from the Dead Sea two thousand years older with astonishing fidelity.'}],
+  quiz:[
+   {q:'The "N" in Tanakh stands for…',a:'Nevi\u2019im — the Prophets',w:['Numbers','Nechemyah']},
+   {q:'The Tanakh traditionally ends with…',a:'2 Chronicles and the decree to return',w:['Malachi','Genesis']},
+   {q:'The Masoretes were…',a:'Scribes who meticulously preserved the Hebrew text',w:['Roman tax collectors','Greek philosophers']}]},
+ {t:'The Apocrypha Story', mins:5, secs:[
+   {h:'It starts in Greek',t:'In the centuries before Yehoshua HaMashiach, Jewish communities in Alexandria translated their Scriptures into Greek — the Septuagint. That collection circulated with additional books: Tobit, Judith, Wisdom, Sirach, Baruch, Maccabees, and expanded editions of Ester and Daniel. The early church, largely Greek-speaking, inherited that wider shelf and read it as Scripture for centuries.'},
+   {h:'Deuterocanon vs. Apocrypha',t:'The names carry the debate. Catholic and Orthodox traditions call these books "deuterocanonical" — a second tier of canon, still Scripture. The Reformers, favoring the Hebrew shelf, moved them out: Luther printed them as a useful appendix, and the original 1611 King James included them between the Testaments before later printings dropped them. "Apocrypha" — hidden things — became their Protestant name.'},
+   {h:'What you actually find there',t:'Inside: two gripping novellas (Tobit, Judith), a Greek-philosophical meditation on immortality (Wisdom of Shlomo), a grandfather\u2019s ethics course (Sirach), war chronicles that explain Hanukkah (Maccabees), a perfect prayer of repentance (Menasheh), and haunting additions to Daniel and Ester. Whatever one\u2019s canon, these shaped centuries of art, prayer, and imagination.'}],
+  quiz:[
+   {q:'The Septuagint is…',a:'The Greek translation of the Scriptures',w:['A Latin hymnbook','A lost gospel']},
+   {q:'The original 1611 King James Bible…',a:'Included the Apocrypha between the Testaments',w:['Never contained it','Was written in Hebrew']},
+   {q:'The festival explained by Maccabees is…',a:'Hanukkah',w:['Passover','Pentecost']}]},
+ {t:'The Ethiopian 81 — and Our 89', mins:5, secs:[
+   {h:'The broadest shelf',t:'The Ethiopian Orthodox Tewahedo Church — among the oldest Christian communities on earth — canonized 81 books, preserved in the classical language Ge\u2019ez. Its shelf includes everything in the wider Greek tradition plus books kept nowhere else: Jubilees, 1 Enoch (Chanoch), the three books of Meqabyan, and an expanded New Testament of church orders and covenant writings.'},
+   {h:'The books only Ethiopia saved',t:'Here is the astonishing part: Enoch and Jubilees — texts quoted or beloved across the ancient world, cherished at Qumran — survive complete only in Ge\u2019ez. When Western scholars finally read full Enoch in the 18th century, it came from Ethiopian manuscripts. One church\u2019s faithfulness preserved a library the rest of the world had lost.'},
+   {h:'How this site counts 89',t:'The 89 merges three shelves: the Tanakh, the Apocrypha, and the Ethiopian 81. Since Ethiopia\u2019s canon already contains nearly everything, the union adds only 1–2 Maccabees — and because traditional Ethiopian counting groups some books (the Jeremiah writings, for instance), naming every book separately yields 89. It\u2019s honest arithmetic, and every entry sits in the Library for you to meet.'}],
+  quiz:[
+   {q:'The classical language of the Ethiopian canon is…',a:'Ge\u2019ez',w:['Latin','Sanskrit']},
+   {q:'1 Enoch survives complete only because of…',a:'Ethiopian manuscripts',w:['Roman archives','A Viking hoard']},
+   {q:'This site\u2019s count reaches 89 by…',a:'Merging three traditions and counting every named book',w:['Adding modern novels','Rounding up from 66']}]}
+]},
+{emoji:'🕯️', color:'#c96f43', title:'The Grand Story',
+ blurb:'From the garden to the garden-city — the whole canon as one sweeping narrative in five acts.',
+ lessons:[
+ {t:'Beginnings & Covenant', mins:5, secs:[
+   {h:'A good world, wounded',t:'Bereshit (Genesis) opens with Yah speaking a good world into being and placing humans in it as gardeners and image-bearers. Within pages, trust breaks — the fruit, the first murder, a violence that floods the earth. Yet even judgment comes with a lifeboat: Noach, an ark, and a rainbow promise that Yah will not give up on the world.'},
+   {h:'One family, for everyone',t:'The story then narrows to widen: Yah calls Avraham with a promise — land, descendants, and blessing that will reach all families of earth. The covenant threads through impossible births, wrestling matches, and a dreamer named Yosef whose betrayal becomes rescue. Genesis ends with the family safe in Egypt — and the trap quietly set.'},
+   {h:'The pattern to watch',t:'Notice the rhythm that will repeat for eighty-nine books: human failure, divine faithfulness, a remnant carried through. The canon is not a gallery of heroes; it is one long argument that Yah keeps covenant with people who keep breaking it. Read everything that follows as variations on that theme.'}],
+  quiz:[
+   {q:'Yah\u2019s promise to Avraham aimed at…',a:'Blessing all families of earth',w:['One city only','Ending all rain']},
+   {q:'Genesis ends with the covenant family…',a:'In Egypt',w:['In Babylon','On the ark']},
+   {q:'The canon\u2019s repeating pattern is…',a:'Human failure met by divine faithfulness',w:['Uninterrupted success','Random events']}]},
+ {t:'Exodus & the Mountain', mins:5, secs:[
+   {h:'Out of the house of slavery',t:'Four centuries later, the family has become a nation — enslaved. Yah hears, remembers, and sends a reluctant shepherd: Moshe. Plagues confront an empire\u2019s gods, a lamb\u2019s blood marks doors on Passover night, and the sea itself opens. The exodus becomes the Tanakh\u2019s defining memory: when Israel later asks who Yah is, the answer is "the one who brought you out."'},
+   {h:'Sinai: a nation gets a constitution',t:'At the mountain, rescue becomes relationship. The Torah given through Moshe — commandments, feasts, courts, care for the stranger and the poor — reads less like a rulebook than a national constitution for a people meant to display Yah\u2019s character. Leviticus\u2019 refrain says it plainly: be holy, for I am holy.'},
+   {h:'Wilderness lessons',t:'Numbers and Deuteronomy carry the nation through forty testing years — manna, grumbling, a bronze serpent, a whole generation\u2019s slow surrender of Egypt\u2019s habits. Deuteronomy is Moshe\u2019s farewell sermon on the border of promise: choose life, love Yah with all your heart. He dies within sight of the land. The story, as ever, continues past its heroes.'}],
+  quiz:[
+   {q:'The exodus becomes Israel\u2019s…',a:'Defining memory of who Yah is',w:['Least-mentioned event','Only law code']},
+   {q:'At Sinai, the Torah functions like…',a:'A covenant constitution',w:['A trade agreement','A war chant']},
+   {q:'Deuteronomy is best described as…',a:'Moshe\u2019s farewell sermon',w:['A psalm collection','A census only']}]},
+ {t:'Kingdom & Exile', mins:5, secs:[
+   {h:'Give us a king',t:'In the land, cycles of drift and rescue (Judges) give way to monarchy: Shaul the tragic first king, then Dovid — shepherd, psalmist, giant-feller, deeply flawed and deeply loved — to whom Yah promises an everlasting throne. Shlomo builds the temple in gold and cedar. It is the story\u2019s high noon, and it does not last a single generation past him.'},
+   {h:'Two kingdoms, many warnings',t:'The nation splits: Israel north, Judah south. Enter the prophets — Eliyahu calling down fire, Amos thundering justice, Hoshea marrying heartbreak, Yeshayahu seeing both judgment and a coming Prince of Peace. Prophets are not fortune-tellers; they are covenant lawyers, prosecuting a people for forgetting the poor and the God who freed them.'},
+   {h:'586 and the long weeping',t:'Assyria swallows the north; in 586 BCE Babylon burns the temple and marches Judah into exile. Lamentations sits in the ashes; Psalm 137 hangs its harps by foreign rivers. Yet exile becomes the canon\u2019s crucible: Yechezkel sees dry bones dance, Yirmeyahu buys a field as a bet on homecoming, and hope learns to sing in a minor key.'}],
+  quiz:[
+   {q:'Yah\u2019s promise to Dovid concerned…',a:'An everlasting throne',w:['Endless wealth','A larger army']},
+   {q:'The prophets functioned mainly as…',a:'Covenant prosecutors calling for justice',w:['Court entertainers','Mapmakers']},
+   {q:'In 586 BCE…',a:'Babylon destroyed the temple and exiled Judah',w:['The temple was built','Rome invaded']}]},
+ {t:'Return & the Treasure Centuries', mins:5, secs:[
+   {h:'Home, smaller and wiser',t:'Persia\u2019s Cyrus lets the exiles return. Ezra rebuilds the people around the Torah; Nechemyah rebuilds the wall in fifty-two days with a trowel in one hand and a spear in the other. The second temple rises — smaller, and the old men weep remembering the first. The nation survives, humbled, gathered around its book.'},
+   {h:'The centuries between',t:'Between Malachi and Matthew stretch four hundred years that only the Treasure shelf narrates. Greek empire washes over Judea; faith is tested in novellas (Tobit, Judith, expanded Ester), argued in philosophy (Wisdom), and codified in a grandfather\u2019s classroom (Sirach). Far from silent, these centuries are where synagogue, scribe, and messianic hope all mature.'},
+   {h:'The hammer and the lamps',t:'When a Greek king profanes the temple, a priestly family strikes back: Judah the Maccabee — "the hammer" — retakes Jerusalem and relights the lamps in 164 BCE, the miracle Hanukkah remembers. Maccabean martyrs voice bold new hope in resurrection. Expectation is now fully loaded: a kingdom, a son of Dovid, a world set right. The stage is lit.'}],
+  quiz:[
+   {q:'Nechemyah is famous for rebuilding…',a:'Jerusalem\u2019s wall in fifty-two days',w:['The ark of Noach','Babylon\u2019s gates']},
+   {q:'The 400 years before the Gospels are narrated by…',a:'The Apocrypha and Ethiopian treasure books',w:['No writings at all','The book of Judges']},
+   {q:'Hanukkah commemorates…',a:'The temple\u2019s rededication under the Maccabees',w:['The exodus','Creation week']}]},
+ {t:'Mashiach & the New Community', mins:5, secs:[
+   {h:'The promised one arrives',t:'The Gospels announce the story\u2019s hinge: Yehoshua HaMashiach, born in Beit Lechem of Dovid\u2019s line, teaching in parables, healing, welcoming the forgotten — then executed by empire and, his followers testify, raised on the third day. Each Gospel angles the portrait: Matthew the King, Mark the mover, Luke the friend of outsiders, Yochanan the Word made flesh.'},
+   {h:'A fire spreads',t:'Acts watches the covenant promise to Avraham finally go global: the Spirit falls, and the good news runs from Jerusalem through Samaria to Rome itself. Kefa opens the door to the nations; Sha\u2019ul — persecutor turned apostle — plants communities across the empire and writes them letters that become half the New Testament: grace, one family, love as the greatest.'},
+   {h:'Garden to garden-city',t:'Revelation closes the canon as Genesis opened it — a tree of life, a river, Yah dwelling with humanity — but now the garden has become a city with open gates and no more tears. The Ethiopian church orders (Sinodos, the Covenant books) show communities learning to live that future early. Eighty-nine books; one long homecoming.'}],
+  quiz:[
+   {q:'The four Gospels are best read as…',a:'Four angled portraits of one figure',w:['Four unrelated biographies','Legal codes']},
+   {q:'In Acts, the Avraham promise…',a:'Extends to all nations',w:['Is cancelled','Applies to Rome only']},
+   {q:'Revelation ends the canon with…',a:'A renewed garden-city where Yah dwells with humanity',w:['A return to Egypt','An empty page']}]}
+]},
+{emoji:'💎', color:'#9b6bd3', title:'Hidden Treasures',
+ blurb:'Enoch, Jubilees, Tobit, Judith, Maccabees, Meqabyan, and the wisdom voices most Bibles never printed.',
+ lessons:[
+ {t:'Chanoch (1 Enoch)', mins:5, secs:[
+   {h:'The man who walked away',t:'Genesis gives Chanoch one haunting line: he walked with Yah, and he was not, for Yah took him. Around that mystery grew one of antiquity\u2019s most influential books — 1 Enoch — visions of heaven\u2019s courts, fallen Watchers whose corruption explains the flood, cosmic calendars, and a radiant "Son of Man" who judges with justice.'},
+   {h:'Everyone was reading it',t:'Enoch saturated the world of the Second Temple: multiple copies at Qumran, echoes across the Gospels\u2019 "Son of Man" language, and an outright quotation in the letter of Yehudah (Jude 14–15). For centuries much of the church read it warmly — before it slid off most canons everywhere except Ethiopia, which kept it as Scripture.'},
+   {h:'How to read it now',t:'Read Enoch as apocalyptic literature: dream-grammar, symbol-heavy, more concerned with meaning than reportage. Its questions are startlingly current — where does evil come from, does power answer to anyone, is history going somewhere? Whatever your canon, meeting Enoch makes the New Testament\u2019s thought-world snap into focus.'}],
+  quiz:[
+   {q:'Genesis says Chanoch…',a:'Walked with Yah and was taken',w:['Built the temple','Fled to Egypt']},
+   {q:'1 Enoch is quoted directly in…',a:'The letter of Yehudah (Jude)',w:['Genesis','2 Chronicles']},
+   {q:'Enoch belongs to which genre?',a:'Apocalyptic vision literature',w:['Courtroom transcript','Cookbook']}]},
+ {t:'Jubilees', mins:4, secs:[
+   {h:'Genesis, retold in sevens',t:'Jubilees retells Genesis and early Exodus as an angel\u2019s dictation to Moshe on Sinai — with the whole of history ruled into "jubilees" of forty-nine years. Everything lands on schedule: creation, covenants, exodus. The message under the math: time itself belongs to Yah, and history keeps an appointment book.'},
+   {h:'The calendar wars',t:'Jubilees champions a solar calendar of exactly 364 days — fifty-two clean weeks, festivals landing on the same weekday forever — against the drifting lunar count. That sounds dry until you realize communities split over it; the Dead Sea Scrolls sect treasured Jubilees precisely for this. When your feast days define you, the calendar is theology.'},
+   {h:'Sabbath at creation\u2019s core',t:'More than anything, Jubilees enthrones the Sabbath — observed by angels before humans existed, woven into creation\u2019s architecture. Kept as Scripture only in Ethiopia\u2019s canon, it offers the adult version of a children\u2019s lesson: rest is not a pause in the story; it is the point the story keeps returning to.'}],
+  quiz:[
+   {q:'Jubilees structures history in units of…',a:'Forty-nine years',w:['One century','Twelve days']},
+   {q:'Its favored calendar was…',a:'A 364-day solar calendar',w:['A 355-day lunar one','No calendar at all']},
+   {q:'Jubilees survives as canon in…',a:'The Ethiopian tradition',w:['Every Protestant Bible','No tradition']}]},
+ {t:'Tobit & Yehudit', mins:5, secs:[
+   {h:'Tobit: providence with a dog',t:'Tobit is scripture\u2019s road-trip novella: a blind, charitable exile sends his son Toviyah on a journey with a hired companion — secretly the angel Refael — plus, delightfully, the family dog. A dangerous fish becomes medicine, a cursed bride becomes a beloved wife, and sight returns. Its quiet thesis: in exile\u2019s ordinary errands, heaven walks alongside.'},
+   {h:'Yehudit: courage in a crisis',t:'Judith is its fierce counterpart: an invading general besieges her town, the elders waver, and a widow of prayer and nerve walks into the enemy camp and ends the war herself. The book is a study in faith as boldness — and in how the canon\u2019s women repeatedly rescue the covenant people when official leadership blinks.'},
+   {h:'Reading novellas as Scripture',t:'Both books wear signals of theological fiction — playful chronology, archetypal villains — much as Yehoshua HaMashiach\u2019s parables do. Their truth is the load they carry: almsgiving matters, angels attend the faithful, courage is contagious. Traditions that canonized them understood that a story can be inspired without being a newspaper.'}],
+  quiz:[
+   {q:'Toviyah\u2019s traveling companion is secretly…',a:'The angel Refael',w:['A Persian prince','His grandfather']},
+   {q:'Judith saves her town by…',a:'Bold action inside the enemy camp',w:['Paying tribute','Fleeing to Egypt']},
+   {q:'These books are best read as…',a:'Inspired theological novellas',w:['Court records','Astronomy manuals']}]},
+ {t:'Maccabees & Meqabyan', mins:5, secs:[
+   {h:'The hammer\u2019s history',t:'1 Maccabees is sober war history: Antiochus IV desecrates the temple, and the priest Mattityahu\u2019s family — led by Judah "the Hammer" — fights a guerrilla war to win it back, rededicating it in 164 BCE. 2 Maccabees retells the era with theological fire, giving the canon its most vivid martyrs and bold statements of resurrection hope.'},
+   {h:'Meqabyan is not Maccabees',t:'Here\u2019s the clarification even scholars trip on: Ethiopia\u2019s three books of Meqabyan are entirely different works — Ge\u2019ez homilies featuring their own heroes (a rebel named Meqabis, faithful brothers under a different tyrant) and long meditations on sin, repentance, and the soul. Shared title, separate books. Ethiopia canonized Meqabyan and, notably, not Greek Maccabees.'},
+   {h:'Why both matter to the 89',t:'Together they complete the merged shelf\u2019s logic: Maccabees supplies the history that lights Hanukkah and bridges to the Gospels\u2019 political world; Meqabyan supplies Ethiopia\u2019s pastoral voice on endurance. Our count of 89 exists precisely because both families of books deserve their own named places on the shelf.'}],
+  quiz:[
+   {q:'"Maccabee" is remembered as meaning…',a:'The hammer',w:['The scribe','The shepherd']},
+   {q:'The books of Meqabyan are…',a:'Distinct Ethiopian works, not Greek Maccabees',w:['Exact translations of Maccabees','Lost forever']},
+   {q:'2 Maccabees is notable for its early hope in…',a:'Resurrection',w:['Sea travel','Coinage']}]},
+ {t:'Wisdom\u2019s Extra Voices', mins:5, secs:[
+   {h:'Wisdom of Shlomo',t:'Written in polished Greek by an Alexandrian Jew speaking in Shlomo\u2019s voice, Wisdom argues that the righteous who suffer are held by Yah — their hope "full of immortality" — and paints Lady Wisdom as the radiant breath of divine glory. It is the canon\u2019s great handshake between Jerusalem and Athens, and early Christians heard HaMashiach in its portrait of the suffering just one.'},
+   {h:'Sirach: a grandfather\u2019s course',t:'Sirach (Ecclesiasticus) is fifty-one chapters of street-level wisdom — friendship, money, speech, honoring parents and physicians — from Yeshua ben Sira, the only book on the shelf whose author signs his name, translated lovingly by his grandson. If Proverbs is a seminar, Sirach is the whole degree, honey-practical and quotable for life.'},
+   {h:'The prayer of Menasheh',t:'Judah\u2019s worst king, Menasheh, repents in Babylonian chains — and tradition supplies the prayer: fifteen verses of flawless contrition. "I have sinned above the number of the sands of the sea… yet I know your mercy is greater." Churches have prayed it for two millennia. The shelf\u2019s smallest treasure may be its most useful: a template for coming home.'}],
+  quiz:[
+   {q:'Wisdom of Shlomo blends Hebrew faith with…',a:'Greek philosophy',w:['Roman law','Norse myth']},
+   {q:'The only book whose author names himself is…',a:'Sirach (Yeshua ben Sira)',w:['Genesis','Judith']},
+   {q:'The Prayer of Menasheh is a model of…',a:'Repentance',w:['Battle strategy','Temple architecture']}]}
+]}
+];
+const ARENA_EXTRA=[
+ {q:'How many books in the Tanakh\u2019s traditional count?',a:'24',w:['66','89']},
+ {q:'The Ethiopian Tewahedo canon holds…',a:'81 books',w:['27 books','100 books']},
+ {q:'The Septuagint was written in…',a:'Greek',w:['Latin','Ge\u2019ez']},
+ {q:'Which letter quotes 1 Enoch?',a:'Yehudah (Jude)',w:['Romans','Titus']},
+ {q:'The Torah consists of how many books?',a:'Five',w:['Seven','Twelve']},
+ {q:'Psalms contains how many songs?',a:'150',w:['89','40']},
+ {q:'The shortest book of the Prophets is…',a:'Ovadyah (Obadiah)',w:['Yeshayahu','Yonah']},
+ {q:'Revelation is attributed to…',a:'Yochanan (John)',w:['Kefa','Moshe']},
+ {q:'The New Testament\u2019s standard count is…',a:'27 books',w:['35 books','12 books']},
+ {q:'"Tewahedo" belongs to which nation\u2019s church?',a:'Ethiopia',w:['Greece','Egypt']},
+ {q:'The temple was rededicated by the Maccabees in…',a:'164 BCE',w:['586 BCE','70 CE']},
+ {q:'This site\u2019s merged canon totals…',a:'89 books',w:['66 books','81 books']}
+];
+const STUDIO=null;
+const LIBRARY=[
+{name:'The Law (Torah)',emoji:'📜',color:'#e0b25e',books:[
+ ['Genesis','Origins','Creation, the flood, and the covenant family — Avraham to Yosef. The whole canon\u2019s themes in seed form.','Adam & Chavah · Noach · Avraham · Yosef'],
+ ['Exodus','Deliverance','Slavery, plagues, Passover, the sea, Sinai. Yah rescues a people and enters covenant with them.','Moshe (Moses) · Miryam · Pharaoh'],
+ ['Leviticus','Law & worship','The holiness handbook: sacrifice, priesthood, purity, jubilee. "Be holy, for I am holy."','Moshe · Aharon (Aaron)'],
+ ['Numbers','Wilderness','Censuses and forty testing years — rebellion, provision, and a generation remade between Egypt and promise.','Moshe · Yehoshua · Bilam (Balaam)'],
+ ['Deuteronomy','Covenant sermon','Moshe\u2019s farewell on the border of the land: remember, love Yah wholly, choose life.','Moshe']]},
+{name:'The Histories',emoji:'🏛️',color:'#c96f43',books:[
+ ['Joshua','Conquest','Jericho falls and the land is divided; covenant renewed at Shechem. "As for me and my house…"','Yehoshua (Joshua) · Rachav (Rahab)'],
+ ['Judges','Cycles','Drift, oppression, rescue, repeat — flawed deliverers in an age when everyone did what was right in their own eyes.','Devorah · Gidon (Gideon) · Shimshon'],
+ ['Ruth','Loyalty','A Moabite widow\u2019s covenant loyalty rewrites a family — and quietly sets up King Dovid\u2019s line.','Rut (Ruth) · Naomi · Boaz'],
+ ['1 Samuel','Kingmaking','Israel demands a king: Shaul rises and unravels while the shepherd Dovid is anointed in secret.','Shmuel (Samuel) · Shaul (Saul) · Dovid'],
+ ['2 Samuel','Dovid\u2019s reign','Triumph, the everlasting-throne promise, catastrophic sin, and costly restoration.','Dovid (David) · Natan (Nathan)'],
+ ['1 Kings','Glory & split','Shlomo\u2019s wisdom and temple; the kingdom fractures; Eliyahu confronts the prophets of Baal.','Shlomo (Solomon) · Eliyahu (Elijah)'],
+ ['2 Kings','Decline','Miracles amid decline: Elisha\u2019s ministry, then Assyria takes the north and Babylon burns Jerusalem.','Elisha · Chizkiyahu (Hezekiah)'],
+ ['1 Chronicles','Retelling','Israel\u2019s story retold after exile — genealogies as identity, Dovid as worship-founder.','Dovid'],
+ ['2 Chronicles','Temple lens','The kings judged by faithfulness to temple worship; ends with Cyrus\u2019s decree to return home.','Shlomo · Yoshiyahu (Josiah)'],
+ ['Ezra','Rebuilding','Exiles return; the altar and temple rise again; the people are re-founded on the Torah.','Ezra · Zerubavel'],
+ ['Nehemiah','The wall','A royal cupbearer rebuilds Jerusalem\u2019s wall in fifty-two days against ridicule and threat.','Nechemyah (Nehemiah)'],
+ ['Esther','Providence','A hidden queen risks everything; deliverance arrives without Yah\u2019s name appearing once. Purim\u2019s origin.','Ester (Esther) · Mordechai · Haman']]},
+{name:'The Treasures',emoji:'💎',color:'#9b6bd3',books:[
+ ['Tobit','Novella','An exile\u2019s son travels with a disguised angel and a dog; a fish heals; charity and providence win.','Tovit · Toviyah (Tobias) · Refael (Raphael)'],
+ ['Judith','Novella','A widow of prayer and nerve walks into an invading general\u2019s camp and ends a siege herself.','Yehudit (Judith)'],
+ ['1 Maccabees','War history','The revolt of the Hammer: temple profaned, retaken, rededicated — the story behind Hanukkah.','Yehudah HaMakabi (Judah Maccabee)'],
+ ['2 Maccabees','Martyr theology','The same era retold with theological fire; scripture\u2019s boldest early hope in resurrection.','The seven brothers · Elazar'],
+ ['1 Meqabyan','Ethiopian homily','A Ge\u2019ez work on tyranny and fidelity — its own heroes, not the Greek Maccabees.','Meqabis and the faithful'],
+ ['2 Meqabyan','Ethiopian homily','Meditations on repentance and Yah\u2019s patience with those who turn back.','The returning faithful'],
+ ['3 Meqabyan','Ethiopian homily','On the destiny of the righteous and the reach of divine help.','The righteous'],
+ ['Jubilees','Retelling','Genesis re-run in forty-nine-year cycles: solar calendar, Sabbath at creation\u2019s core. Preserved in Ge\u2019ez.','The angel of the presence · Moshe'],
+ ['Ezra Sutuel','Apocalypse','Ezra questions Yah over evil and exile; seven visions answer in fire and mystery (2 Esdras).','Ezra']]},
+{name:'Songs & Wisdom',emoji:'🎵',color:'#d3699b',books:[
+ ['Job','Wisdom debate','Suffering interrogated for forty chapters; answered not with reasons but with presence in the whirlwind.','Iyov (Job)'],
+ ['Psalms','Songbook','150 prayers spanning every human weather — praise, rage, grief, trust. The canon\u2019s heart.','Dovid · Asaf · the sons of Korach'],
+ ['Proverbs','Sayings','Compressed wisdom for money, speech, work, desire; Lady Wisdom calling in the streets.','Shlomo'],
+ ['Ecclesiastes','Wisdom (dark)','"Vapor of vapors" — a fearless audit of pleasure, work, and death, resolving into reverent simplicity.','Kohelet (the Teacher)'],
+ ['Song of Songs','Love poetry','Unashamed love lyric read for millennia as human passion, divine romance, or both.','The beloved & the shepherd'],
+ ['Wisdom of Solomon','Philosophy','Alexandrian Greek meets Hebrew faith: immortality, Lady Wisdom as divine radiance, the suffering just one.','In Shlomo\u2019s voice'],
+ ['Sirach','Ethics course','Fifty-one chapters of practical wisdom — the only book whose author signs his name.','Yeshua ben Sira'],
+ ['Prayer of Manasseh','Penitence','Fifteen verses of perfect contrition from Judah\u2019s worst king in chains.','King Menasheh (Manasseh)']]},
+{name:'The Great Prophets',emoji:'🔥',color:'#4fae9b',books:[
+ ['Isaiah','Prophecy','Judgment and dazzling hope: the Prince of Peace, the suffering servant, new heavens and earth.','Yeshayahu (Isaiah)'],
+ ['Jeremiah','Prophecy','The weeping prophet: forty years of unheeded warning, a new-covenant promise, a field bought in hope.','Yirmeyahu (Jeremiah) · Baruch'],
+ ['Lamentations','Grief poetry','Five acrostic dirges in Jerusalem\u2019s ashes — with mercy new every morning at the center.','Yirmeyahu (attrib.)'],
+ ['Baruch','Exile letter','Confession, wisdom hymn, and consolation from Jeremiah\u2019s scribe to a scattered people.','Baruch'],
+ ['4 Baruch','Legend','The Paralipomena: Jerusalem\u2019s fall retold with a sleeping servant, an eagle courier, and homecoming.','Baruch · Avimelech'],
+ ['Ezekiel','Visionary prophecy','Wheels within wheels, the glory departing and returning, dry bones rising into an army.','Yechezkel (Ezekiel)'],
+ ['Daniel','Court & apocalypse','Faithfulness in Babylon — lions, furnace, writing on the wall — then visions of kingdoms and the Ancient of Days.','Daniel · Chananyah, Mishael, Azaryah'],
+ ['Enoch','Apocalyptic','Watchers, heavenly journeys, the Son of Man. Quoted by Yehudah; preserved whole only in Ge\u2019ez.','Chanoch (Enoch)']]},
+{name:'The Twelve',emoji:'🌟',color:'#7fb56a',books:[
+ ['Hosea','Prophecy','A marriage as message: Israel\u2019s unfaithfulness met by Yah\u2019s unkillable love.','Hoshea · Gomer'],
+ ['Joel','Prophecy','Locust devastation becomes a canvas for the day of Yah — and the Spirit poured on all flesh.','Yoel (Joel)'],
+ ['Amos','Justice','A shepherd thunders at comfortable religion: let justice roll down like waters.','Amos'],
+ ['Obadiah','Oracle','One chapter against Edom\u2019s gloating — the canon\u2019s shortest prophetic book.','Ovadyah (Obadiah)'],
+ ['Jonah','Prophetic satire','The prophet who ran; the fish; the city that repented; the God more merciful than his messenger.','Yonah (Jonah)'],
+ ['Micah','Prophecy','Courtroom and comfort: a ruler from Beit Lechem; do justice, love mercy, walk humbly.','Michah (Micah)'],
+ ['Nahum','Oracle','Nineveh\u2019s fall announced — the flip side of Yonah\u2019s mercy: oppression has an expiry date.','Nachum (Nahum)'],
+ ['Habakkuk','Dialogue','A prophet argues with Yah about injustice and lands on the canon\u2019s hinge: the righteous live by faith.','Chavakuk (Habakkuk)'],
+ ['Zephaniah','Prophecy','Sweeping judgment resolving into the canon\u2019s tenderest line: Yah rejoicing over his people with singing.','Tzefanyah (Zephaniah)'],
+ ['Haggai','Prophecy','Four dated sermons in one year: stop paneling your houses; build Yah\u2019s. They did.','Chaggai (Haggai)'],
+ ['Zechariah','Visions','Night visions and a king arriving humble, riding on a donkey.','Zecharyah (Zechariah)'],
+ ['Malachi','Disputation','The Tanakh\u2019s closing argument in Christian order — and a messenger promised before the great day.','Malachi']]},
+{name:'HaMashiach & Acts',emoji:'⭐',color:'#5f8fd0',books:[
+ ['Matthew','Gospel','The King of the Jews: genealogy from Avraham, the Sermon on the Mount, the Great Commission.','Yehoshua HaMashiach · Miryam · the Twelve'],
+ ['Mark','Gospel','The action Gospel — "immediately" — a servant-King revealed most clearly at the cross.','Yehoshua HaMashiach · Kefa'],
+ ['Luke','Gospel','The physician\u2019s careful account: outsiders, women, the poor, and history\u2019s best-loved parables.','Yehoshua HaMashiach · Miryam · Elisheva'],
+ ['John','Gospel','The Word made flesh: seven signs, seven I-AMs, and life in his name.','Yehoshua HaMashiach · Yochanan'],
+ ['Acts','History','The Spirit falls and the movement runs from Jerusalem to Rome in one generation.','Kefa (Peter) · Sha\u2019ul (Paul) · Stephanos']]},
+{name:'The Letters & the Vision',emoji:'✉️',color:'#8b93c9',books:[
+ ['Romans','Letter','Sha\u2019ul\u2019s masterwork: grace, faith, one renewed family, nothing separating us from love.','Sha\u2019ul (Paul)'],
+ ['1 Corinthians','Letter','A gifted, messy church corrected — with the love chapter and resurrection\u2019s great defense.','Sha\u2019ul'],
+ ['2 Corinthians','Letter','Ministry unmasked: treasure in clay jars, strength perfected in weakness.','Sha\u2019ul'],
+ ['Galatians','Letter','A fiery defense of freedom: neither slave nor free — one in HaMashiach; fruit of the Spirit.','Sha\u2019ul'],
+ ['Ephesians','Letter','The cosmic church: chosen, seated, unified — then armored in truth and peace.','Sha\u2019ul'],
+ ['Philippians','Letter','Joy from a prison cell; the great hymn of the one who emptied himself.','Sha\u2019ul'],
+ ['Colossians','Letter','HaMashiach supreme over every power — the image of the invisible Yah.','Sha\u2019ul'],
+ ['1 Thessalonians','Letter','Comfort for the grieving and readiness for the day: encourage one another.','Sha\u2019ul'],
+ ['2 Thessalonians','Letter','Steadying a rattled church: stand firm, don\u2019t tire of doing good.','Sha\u2019ul'],
+ ['1 Timothy','Letter','A mentor\u2019s manual for leading a church household with sound teaching and love.','Sha\u2019ul · Timotiyos (Timothy)'],
+ ['2 Timothy','Letter','Sha\u2019ul\u2019s last words: guard the deposit, endure, finish the race.','Sha\u2019ul · Timotiyos'],
+ ['Titus','Letter','Order for the churches of Crete: sound doctrine adorned with good works.','Titos (Titus)'],
+ ['Philemon','Letter','One page that quietly detonates slavery: receive Onesimos as a brother.','Onesimos · Philemon'],
+ ['Hebrews','Sermon-letter','HaMashiach greater than angels, Moshe, and the old sacrifices; the hall of faith; run with endurance.','Anonymous · the faithful of old'],
+ ['James','Wisdom letter','Proverbs for the church: faith that works, tongues tamed, favoritism forbidden.','Ya\u2019akov (James)'],
+ ['1 Peter','Letter','Hope for exiles under fire: living stones, cast every care on him.','Kefa (Peter)'],
+ ['2 Peter','Letter','Remember and grow; scoffers come, but the day of Yah will not be late.','Kefa'],
+ ['1 John','Letter','The love letter: Yah is light, Yah is love; perfect love casts out fear.','Yochanan (John)'],
+ ['2 John','Letter','Thirteen verses: walk in truth and love; guard the teaching.','Yochanan'],
+ ['3 John','Letter','Hospitality commended, ambition rebuked — church life in miniature.','Yochanan · Gaios'],
+ ['Jude','Letter','A fierce half-page against corruption — quoting Chanoch — ending in the great doxology.','Yehudah (Jude)'],
+ ['Revelation','Apocalypse','Yochanan\u2019s unveiling: letters to seven churches, the Lamb on the throne, and the garden-city with no more tears.','Yochanan · the Lamb']]},
+{name:'The Church Orders',emoji:'⛪',color:'#a08052',books:[
+ ['Sinodos: Order','Church order','Apostolic regulations for worship and community life, treasured in the Ethiopian NT.','The apostles'],
+ ['Sinodos: Commands','Church order','Directives on ministry, conduct, and mutual care for the gathered church.','The apostles'],
+ ['Sinodos: Decrees','Church order','Rulings for fairness and discipline within Yah\u2019s household.','The apostles'],
+ ['Sinodos: Laws','Church order','Further statutes — the fourth division of the Ethiopian Sinodos collection.','The apostles'],
+ ['Covenant, Book 1','Covenant teaching','The Testament of our Lord: liturgy, prayer, and promise for the community.','The risen HaMashiach · the disciples'],
+ ['Covenant, Book 2','Covenant teaching','Post-resurrection instruction of Yehoshua HaMashiach to his gathered disciples.','Yehoshua HaMashiach'],
+ ['Ethiopic Clement','Epistle','Teaching transmitted under Clement of Rome\u2019s name in the Ge\u2019ez tradition — peace and order.','Clement · Kefa'],
+ ['Ethiopic Didascalia','Manual','A handbook for bishops and servants: worship, charity, and the shepherd\u2019s duties.','The church\u2019s teachers']]}
+];
+/* DATA_END */
+/* ENGINE_START */
+const $=id=>document.getElementById(id);
+const LKEY=SITE.key;
+let S=Object.assign({xp:0,done:{},last:null,streak:0,lastDay:null,best:0,sound:true},
+  (()=>{try{return JSON.parse(localStorage.getItem(LKEY))||{}}catch(e){return{}}})());
+let mem=null;
+function save(){ mem=S; try{localStorage.setItem(LKEY,JSON.stringify(S));}catch(e){} }
+
+/* ---- streak ---- */
+function dayStr(d){ return d.toISOString().slice(0,10); }
+function touchStreak(){
+  const today=dayStr(new Date());
+  if(S.lastDay===today) return;
+  const y=new Date(); y.setDate(y.getDate()-1);
+  S.streak = (S.lastDay===dayStr(y)) ? S.streak+1 : 1;
+  S.lastDay=today; save(); chips();
+}
+
+/* ---- xp & levels ---- */
+function levelOf(xp){ let t=SITE.levels[0][1]; for(const [n,name] of SITE.levels){ if(xp>=n) t=name; } return t; }
+function nextLevelAt(xp){ for(const [n] of SITE.levels){ if(xp<n) return n; } return null; }
+function addXp(n){ S.xp+=n; save(); chips(); }
+function chips(){
+  $('streakChip').innerHTML='🔥 <b>'+S.streak+'</b><span class="sub">day streak</span>';
+  $('xpChip').innerHTML='✦ <b>'+S.xp+'</b><span class="sub">'+levelOf(S.xp)+'</span>';
+}
+
+/* ---- sound (subtle) ---- */
+let AC=null; const ac=()=>{ if(!AC){try{AC=new (window.AudioContext||window.webkitAudioContext)()}catch(e){}} return AC; };
+function tone(f,d,dl=0,v=.06,type='sine'){ if(!S.sound)return; const c=ac(); if(!c)return;
+  const o=c.createOscillator(),g=c.createGain(); o.type=type;o.frequency.value=f;o.connect(g);g.connect(c.destination);
+  const t=c.currentTime+dl; g.gain.setValueAtTime(0,t); g.gain.linearRampToValueAtTime(v,t+.02); g.gain.exponentialRampToValueAtTime(.0001,t+d);
+  o.start(t);o.stop(t+d+.05); }
+const sfx={ tick(){tone(660,.06)}, yes(){tone(523,.09);tone(784,.12,.09)}, no(){tone(196,.16,0,.05,'triangle')},
+  win(){[523,659,784,1047].forEach((f,i)=>tone(f,.12,i*.08,.07))}, combo(n){tone(660+n*110,.1,0,.07)} };
+$('sndBtn').addEventListener('click',()=>{S.sound=!S.sound;save();$('sndBtn').textContent=S.sound?'🔊':'🔇';});
+$('sndBtn').textContent=S.sound?'🔊':'🔇';
+
+/* ---- listen (TTS) ---- */
+let pv=null;
+function pickV(){ if(!('speechSynthesis' in window))return; const vs=speechSynthesis.getVoices();
+  const en=vs.filter(v=>/^en/i.test(v.lang));
+  pv=en.find(v=>v.localService)||en[0]||vs[0]; }
+if('speechSynthesis' in window){ pickV(); speechSynthesis.onvoiceschanged=pickV; }
+function speak(t,btn){
+  if(!('speechSynthesis' in window)) return;
+  if(speechSynthesis.speaking){ speechSynthesis.cancel(); if(btn)btn.textContent='▷ Listen'; return; }
+  const u=new SpeechSynthesisUtterance(t); if(pv)u.voice=pv; u.rate=1.0;
+  if(btn){ btn.textContent='■ Stop'; u.onend=()=>btn.textContent='▷ Listen'; }
+  speechSynthesis.speak(u);
+}
+
+/* ---- router ---- */
+function show(id){ if('speechSynthesis' in window) speechSynthesis.cancel();
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('on'));
+  $(id).classList.add('on'); window.scrollTo({top:0}); }
+$('logo').addEventListener('click',()=>{home();});
+
+/* ---- progress helpers ---- */
+const lKey=(p,l)=>p+'-'+l;
+function pathDone(p){ return PATHS[p].lessons.filter((_,l)=>S.done[lKey(p,l)]).length; }
+function totalDone(){ return Object.keys(S.done).length; }
+function totalLessons(){ return PATHS.reduce((s,p)=>s+p.lessons.length,0); }
+function nextUp(){
+  if(S.last){ const [p,l]=S.last; if(!S.done[lKey(p,l)]) return [p,l]; }
+  for(let p=0;p<PATHS.length;p++) for(let l=0;l<PATHS[p].lessons.length;l++) if(!S.done[lKey(p,l)]) return [p,l];
+  return null;
+}
+
+/* ---- HOME ---- */
+function home(){
+  const nu=nextUp();
+  const doneAll=totalDone(), tot=totalLessons();
+  const nla=nextLevelAt(S.xp);
+  let h=`<div class="glass hero">
+    <span class="tag">${SITE.heroKicker}</span>
+    <h1>${SITE.heroTitle}</h1>
+    <p>${SITE.heroSub}</p>
+    <div class="heroRow">`;
+  if(nu){
+    const [p,l]=nu; const L=PATHS[p].lessons[l];
+    h+=`<button class="btn big" onclick="openLesson(${p},${l})">${doneAll? 'Continue':'Begin'}: ${L.t} →</button>
+        <span style="color:var(--dim);font-size:14px">${PATHS[p].emoji} ${PATHS[p].title} · ${L.mins} min</span>`;
+  } else {
+    h+=`<button class="btn big" onclick="openArena()">All ${tot} lessons complete — enter ${SITE.arenaName} →</button>`;
+  }
+  h+=`</div></div>`;
+
+  h+=`<div class="sectionTitle">Paths</div><div class="grid">`;
+  PATHS.forEach((P,p)=>{
+    const d=pathDone(p), n=P.lessons.length, pct=Math.round(d/n*100);
+    h+=`<div class="glass hover pathcard" onclick="openPath(${p})">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start">
+        <span class="pemoji">${P.emoji}</span>
+        <span class="ring" style="--p:${pct};--rc:${P.color}"><i>${pct}%</i></span>
+      </div>
+      <h3>${P.title}</h3><p>${P.blurb}</p>
+      <div class="meta">${n} lessons · ${d} done</div>
+    </div>`;
+  });
+  h+=`</div>`;
+
+  h+=`<div class="sectionTitle">Keep the streak alive</div><div class="rowcards">
+    <div class="glass hover featurecard" onclick="openArena()">
+      <span class="pemoji">⚔️</span><h3>${SITE.arenaName}</h3><p>${SITE.arenaDesc}</p>
+      <div class="meta" style="margin-top:12px">Best combo: ×${S.best||1}</div>
+    </div>`;
+  if(typeof STUDIO!=='undefined'&&STUDIO) h+=`
+    <div class="glass hover featurecard" onclick="openStudio()">
+      <span class="pemoji">🫁</span><h3>${SITE.studioName}</h3><p>${SITE.studioDesc}</p></div>`;
+  if(typeof LIBRARY!=='undefined'&&LIBRARY) h+=`
+    <div class="glass hover featurecard" onclick="openLibrary()">
+      <span class="pemoji">🏛️</span><h3>${SITE.libraryName}</h3><p>${SITE.libraryDesc}</p></div>`;
+  h+=`</div>`;
+  if(nla) h+=`<p style="color:var(--faint);font-size:13.5px;margin-top:26px">✦ ${nla-S.xp} XP to <b style="color:var(--dim)">${SITE.levels.find(x=>x[0]===nla)[1]}</b></p>`;
+  $('v-home').innerHTML=h;
+  show('v-home'); chips();
+}
+
+/* ---- PATH ---- */
+function openPath(p){
+  const P=PATHS[p]; const nu=nextUp();
+  let h=`<button class="back" onclick="home()">← Home</button>
+  <div class="pathhead"><span class="pemoji">${P.emoji}</span>
+    <div><h2>${P.title}</h2><p>${P.blurb}</p></div></div>`;
+  P.lessons.forEach((L,l)=>{
+    const done=!!S.done[lKey(p,l)];
+    const isNext=nu&&nu[0]===p&&nu[1]===l;
+    h+=`<div class="glass hover lessonrow ${done?'done':''}" onclick="openLesson(${p},${l})">
+      <span class="num">${done?'✓':l+1}</span>
+      <div><h4>${L.t}${isNext?'<span class="nextpill">Up next</span>':''}</h4>
+      <div class="lmeta">${L.secs.length} parts · ${L.quiz.length} questions · ${L.mins} min</div></div>
+      <span class="go">→</span></div>`;
+  });
+  $('v-path').innerHTML=h; show('v-path');
+}
+
+/* ---- LESSON (stepper + quiz) ---- */
+let cur={p:0,l:0,step:0,correct:0};
+function openLesson(p,l){
+  cur={p,l,step:0,correct:0};
+  S.last=[p,l]; save();
+  renderStep();
+  show('v-lesson');
+}
+function renderStep(){
+  const P=PATHS[cur.p], L=P.lessons[cur.l];
+  const nSecs=L.secs.length, nQ=L.quiz.length, total=nSecs+nQ;
+  const pct=Math.round(cur.step/total*100);
+  let h=`<div class="lessonwrap">
+    <button class="back" onclick="openPath(${cur.p})">← ${P.title}</button>
+    <div style="display:flex;justify-content:space-between;align-items:baseline">
+      <h2 style="font-size:clamp(22px,3.6vw,30px)">${L.t}</h2>
+      <span style="color:var(--faint);font-size:13px">${Math.min(cur.step+1,total)} / ${total}</span></div>
+    <div class="progressbar"><i style="width:${pct}%"></i></div>`;
+
+  if(cur.step<nSecs){
+    const sec=L.secs[cur.step];
+    h+=`<div class="glass seccard">
+      <span class="tag" style="border-color:${P.color}55;color:${P.color}">Part ${cur.step+1}</span>
+      <h3 style="margin-top:12px">${sec.h}</h3><p>${sec.t}</p>
+      <div class="secfoot">
+        <button class="btn" onclick="stepNext()">${cur.step<nSecs-1?'Continue →':'To the questions →'}</button>
+        <button class="listen" id="listenBtn">▷ Listen</button>
+      </div></div>`;
+  } else {
+    const qi=cur.step-nSecs, Q=L.quiz[qi];
+    const opts=[Q.a,...Q.w].sort(()=>Math.random()-.5);
+    h+=`<div class="glass seccard">
+      <span class="tag" style="border-color:${P.color}55;color:${P.color}">Question ${qi+1} of ${nQ}</span>
+      <h3 style="margin-top:12px;font-family:Inter;font-weight:600;font-size:20px">${Q.q}</h3>
+      <div style="margin-top:16px" id="qbox">`;
+    opts.forEach(o=>{ h+=`<button class="qopt" onclick="answer(this,${JSON.stringify(o===Q.a)})">${o}</button>`; });
+    h+=`</div><div class="qfeed" id="qfeed"></div></div>`;
+  }
+  h+=`</div>`;
+  $('v-lesson').innerHTML=h;
+  const lb=$('listenBtn');
+  if(lb){ const sec=L.secs[cur.step]; lb.onclick=()=>speak(sec.h+'. '+sec.t,lb); }
+  window.scrollTo({top:0});
+}
+function stepNext(){ sfx.tick(); cur.step++; renderStep(); }
+function answer(btn,ok){
+  const box=$('qbox');
+  if(box.dataset.locked) return;
+  if(ok){
+    box.dataset.locked=1; btn.classList.add('right'); sfx.yes(); cur.correct++;
+    $('qfeed').style.color='var(--a1)'; $('qfeed').textContent='Correct ✦';
+    setTimeout(()=>{ cur.step++;
+      const L=PATHS[cur.p].lessons[cur.l];
+      if(cur.step>=L.secs.length+L.quiz.length) finishLesson(); else renderStep();
+    },700);
+  } else {
+    btn.classList.add('wrong'); btn.disabled=true; sfx.no();
+    $('qfeed').style.color='var(--a3)'; $('qfeed').textContent='Not quite — try again.';
+  }
+}
+function finishLesson(){
+  const P=PATHS[cur.p], L=P.lessons[cur.l];
+  const first=!S.done[lKey(cur.p,cur.l)];
+  const xp=(first?30:8)+cur.correct*(first?15:4);
+  S.done[lKey(cur.p,cur.l)]=true; touchStreak(); addXp(xp); save();
+  const nu=nextUp();
+  $('doneEmoji').textContent=P.emoji;
+  $('doneTitle').textContent='Lesson complete';
+  $('doneSub').textContent=L.t+' · '+cur.correct+'/'+L.quiz.length+' correct'+(first?'':' · review');
+  $('doneXp').textContent='+'+xp+' XP · '+levelOf(S.xp);
+  if(nu){ const NL=PATHS[nu[0]].lessons[nu[1]];
+    $('nextTease').innerHTML='Up next: <b>'+NL.t+'</b> · '+PATHS[nu[0]].emoji+' '+PATHS[nu[0]].title+' · '+NL.mins+' min';
+    $('doneNext').textContent='Keep going →';
+    $('doneNext').onclick=()=>{ $('done').classList.remove('on'); openLesson(nu[0],nu[1]); };
+  } else {
+    $('nextTease').innerHTML='Every lesson complete. <b>'+SITE.arenaName+'</b> awaits.';
+    $('doneNext').textContent='Enter '+SITE.arenaName+' →';
+    $('doneNext').onclick=()=>{ $('done').classList.remove('on'); openArena(); };
+  }
+  $('doneHome').onclick=()=>{ $('done').classList.remove('on'); home(); };
+  $('done').classList.add('on'); sfx.win();
+}
+
+/* ---- ARENA ---- */
+let A={qs:[],i:0,score:0,combo:0,best:0,xp:0};
+function arenaBank(){
+  const bank=[...ARENA_EXTRA];
+  PATHS.forEach(P=>P.lessons.forEach(L=>L.quiz.forEach(q=>bank.push(q))));
+  return bank;
+}
+function openArena(){
+  const bank=arenaBank().sort(()=>Math.random()-.5).slice(0,10);
+  A={qs:bank,i:0,score:0,combo:0,best:0,xp:0};
+  renderArenaQ();
+  show('v-arena');
+}
+function mult(){ return A.combo>=6?3:A.combo>=3?2:1; }
+function renderArenaQ(){
+  if(A.i>=A.qs.length) return arenaEnd();
+  const Q=A.qs[A.i];
+  const opts=[Q.a,...Q.w].sort(()=>Math.random()-.5);
+  let h=`<button class="back" onclick="home()">← Home</button>
+  <div class="arenatop">
+    <span class="tag">Question ${A.i+1} / ${A.qs.length}</span>
+    <span class="tag">Score ${A.score}</span>
+    <span class="spacer"></span>
+    <span class="combo ${A.combo>=3?'hot':''}">×${mult()} combo</span>
+  </div>
+  <div class="glass arenaq"><h3>${Q.q}</h3><div style="margin-top:16px" id="abox">`;
+  opts.forEach(o=>{ h+=`<button class="qopt" onclick="arenaAnswer(this,${JSON.stringify(o===Q.a)})">${o}</button>`; });
+  h+=`</div><div class="qfeed" id="afeed"></div></div>`;
+  $('v-arena').innerHTML=h;
+}
+function arenaAnswer(btn,ok){
+  const box=$('abox'); if(box.dataset.locked) return; box.dataset.locked=1;
+  if(ok){
+    btn.classList.add('right');
+    A.combo++; A.best=Math.max(A.best,mult());
+    const gain=10*mult(); A.score++; A.xp+=gain;
+    sfx.combo(Math.min(A.combo,6));
+    $('afeed').style.color='var(--a1)'; $('afeed').textContent='+'+gain+' XP';
+  } else {
+    btn.classList.add('wrong'); A.combo=0; sfx.no();
+    $('afeed').style.color='var(--a3)'; $('afeed').textContent='Combo reset';
+  }
+  setTimeout(()=>{A.i++;renderArenaQ();},650);
+}
+function arenaEnd(){
+  touchStreak(); addXp(A.xp);
+  if(A.best>(S.best||0)){ S.best=A.best; save(); }
+  $('v-arena').innerHTML=`<div class="glass" style="max-width:480px;margin:8vh auto;padding:40px;text-align:center">
+    <div style="font-size:50px">⚔️</div>
+    <h2 style="font-size:28px;margin:10px 0 4px">${A.score} / ${A.qs.length}</h2>
+    <p style="color:var(--dim);margin:0 0 6px">Best combo ×${A.best} · +${A.xp} XP</p>
+    <p style="color:var(--faint);font-size:13.5px;margin:0 0 22px">${A.score>=9?'Untouchable.':A.score>=7?'Sharp. One more run?':'The bank remembers. Run it back.'}</p>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+      <button class="btn big" onclick="openArena()">Run it back →</button>
+      <button class="btn ghost" onclick="home()">Home</button>
+    </div></div>`;
+  sfx.win(); chips();
+}
+
+/* ---- STUDIO (breathwork) ---- */
+let BT=null;
+function openStudio(){
+  if(typeof STUDIO==='undefined'||!STUDIO) return home();
+  let h=`<button class="back" onclick="stopBreath();home()">← Home</button>
+  <div class="pathhead"><span class="pemoji">🫁</span>
+   <div><h2>${SITE.studioName}</h2><p>${SITE.studioDesc}</p></div></div>
+  <div class="studioopts">`;
+  STUDIO.forEach((st,i)=>{ h+=`<div class="glass hover featurecard" onclick="startBreath(${i})">
+    <h3>${st.name}</h3><p>${st.desc}</p><div class="meta" style="margin-top:10px">${st.cycles} rounds</div></div>`; });
+  h+=`</div><div class="breathwrap" id="bwrap"></div>`;
+  $('v-studio').innerHTML=h; show('v-studio');
+}
+function stopBreath(){ if(BT){clearTimeout(BT);BT=null;} if('speechSynthesis' in window) speechSynthesis.cancel(); }
+function startBreath(i){
+  stopBreath();
+  const st=STUDIO[i];
+  $('bwrap').innerHTML=`<div id="bcircle">Ready…</div>
+    <p style="color:var(--dim);margin-top:22px" id="bstatus">${st.name} · round 1 of ${st.cycles}</p>
+    <button class="btn ghost" onclick="stopBreath();document.getElementById('bcircle').textContent='Paused';">Stop</button>`;
+  $('bwrap').scrollIntoView({behavior:'smooth'});
+  let round=0, phase=0;
+  function step(){
+    const c=$('bcircle'); if(!c) return;
+    if(phase>=st.pattern.length){ phase=0; round++;
+      if(round>=st.cycles){ c.className=''; c.style.setProperty('--dur','1s'); c.textContent='Complete ✦';
+        $('bstatus').textContent='Well done. +6 XP'; touchStreak(); addXp(6); sfx.win(); return; }
+      $('bstatus').textContent=st.name+' · round '+(round+1)+' of '+st.cycles;
+    }
+    const [label,secs]=st.pattern[phase];
+    c.style.setProperty('--dur',secs+'s');
+    c.className = /in/i.test(label)?'in':/out/i.test(label)?'out':'hold';
+    c.textContent=label+' · '+secs;
+    sfx.tick();
+    phase++;
+    BT=setTimeout(step, secs*1000);
+  }
+  BT=setTimeout(step,900);
+}
+
+/* ---- LIBRARY (only when data present) ---- */
+function openLibrary(){
+  if(typeof LIBRARY==='undefined'||!LIBRARY) return home();
+  let h=`<button class="back" onclick="home()">← Home</button>
+  <div class="pathhead"><span class="pemoji">🏛️</span>
+   <div><h2>${SITE.libraryName}</h2><p>${SITE.libraryDesc}</p></div></div>`;
+  LIBRARY.forEach((sh,si)=>{
+    h+=`<div class="sectionTitle" style="color:${sh.color}">${sh.emoji} ${sh.name} · ${sh.books.length}</div><div class="grid">`;
+    sh.books.forEach(b=>{
+      h+=`<div class="glass hover pathcard" style="cursor:default">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <h3 style="margin:0;font-size:18px">${b[0]}</h3>
+          <span class="tag" style="border-color:${sh.color}55;color:${sh.color}">${b[1]}</span></div>
+        <p style="min-height:0;margin:10px 0 8px">${b[2]}</p>
+        <div class="meta">${b[3]}</div></div>`;
+    });
+    h+=`</div>`;
+  });
+  $('v-library').innerHTML=h; show('v-library');
+}
+
+/* ---- boot ---- */
+$('vtag').textContent=SITE.vtag;
+chips();
+home();
+/* ENGINE_END */
+</script>
+</body>
+</html>
