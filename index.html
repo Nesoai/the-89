@@ -138,10 +138,23 @@ header{display:flex;align-items:center;gap:12px;padding:6px 0 22px}
 #bcircle.out{transform:scale(1)}
 .studioopts{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;width:100%}
 
+#bnav{display:none}
+@media(max-width:720px){
+  body{padding-bottom:70px}
+  #bnav{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:70;background:var(--panel);border-top:1px solid var(--line);backdrop-filter:blur(10px)}
+  #bnav button{flex:1;background:none;border:none;color:var(--faint);font-family:inherit;font-size:10.5px;font-weight:600;padding:9px 2px calc(9px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:3px;align-items:center;cursor:pointer}
+  #bnav button .bi{font-size:20px;line-height:1}
+  #bnav button.on{color:var(--a1)}
+}
 footer{margin-top:60px;text-align:center;color:var(--faint);font-size:13px}
 footer a{color:var(--dim)}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
+<script>
+/* Analytics — paste a GA4 Measurement ID (G-XXXXXXX) to enable; leave "" for none */
+const GA_ID="";
+if(GA_ID){const s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id='+GA_ID;document.head.appendChild(s);window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config',GA_ID);}
+</script>
 </head>
 <body>
 <div class="blob" id="b1"></div><div class="blob" id="b2"></div><div class="blob" id="b3"></div>
@@ -162,7 +175,7 @@ footer a{color:var(--dim)}
   <div class="view" id="v-studio"></div>
   <div class="view" id="v-library"></div>
 
-  <footer>The 89 · a Boundless learning studio · <span id="vtag">v1.0</span><br>
+  <footer>The 89 · a Boundless learning studio · <span id="vtag">v1.1</span><br>
   A study companion to the merged canon — Tanakh, Apocrypha, and the Ethiopian Orthodox Tewahedo tradition — using the names Yah and Yehoshua HaMashiach.</footer>
 </div>
 
@@ -182,7 +195,7 @@ footer a{color:var(--dim)}
 /* ============ THE 89 — adult learning engine (shared with Lumen) ============ */
 /* DATA_START */
 const SITE={
-  key:'the89.v1', name:'The 89', vtag:'v1.0',
+  key:'the89.v1', name:'The 89', vtag:'v1.1',
   heroKicker:'The scroll is open',
   heroTitle:'Eighty-nine books. One story.',
   heroSub:'Study the complete merged canon — the Tanakh, the Apocrypha, and the Ethiopian 81 — in five-minute lessons. Walk the grand story, meet the hidden treasures, and test yourself in the Scroll Trials.',
@@ -191,7 +204,7 @@ const SITE={
   libraryName:'The Library of 89', libraryDesc:'Every book on one shelf — genre, essence, and key figures at a glance.'
 };
 const PATHS=[
-{emoji:'📏', color:'#e0b25e', title:'Canon 101',
+{emoji:'📏', color:'#e0b25e', title:'Canon 101', refs:[['Biblical canons compared','https://en.wikipedia.org/wiki/Biblical_canon'],['The Orthodox Tewahedo canon','https://en.wikipedia.org/wiki/Orthodox_Tewahedo_biblical_canon'],['The Septuagint','https://en.wikipedia.org/wiki/Septuagint']],
  blurb:'Why Bibles differ — 24, 66, 73, 81 — and how this merged shelf reaches 89.',
  lessons:[
  {t:'What Is a Canon?', mins:4, secs:[
@@ -227,7 +240,7 @@ const PATHS=[
    {q:'1 Enoch survives complete only because of…',a:'Ethiopian manuscripts',w:['Roman archives','A Viking hoard']},
    {q:'This site\u2019s count reaches 89 by…',a:'Merging three traditions and counting every named book',w:['Adding modern novels','Rounding up from 66']}]}
 ]},
-{emoji:'🕯️', color:'#c96f43', title:'The Grand Story',
+{emoji:'🕯️', color:'#c96f43', title:'The Grand Story', refs:[['The Hebrew Bible — overview','https://en.wikipedia.org/wiki/Hebrew_Bible'],['Second Temple period','https://en.wikipedia.org/wiki/Second_Temple_period']],
  blurb:'From the garden to the garden-city — the whole canon as one sweeping narrative in five acts.',
  lessons:[
  {t:'Beginnings & Covenant', mins:5, secs:[
@@ -271,7 +284,7 @@ const PATHS=[
    {q:'In Acts, the Avraham promise…',a:'Extends to all nations',w:['Is cancelled','Applies to Rome only']},
    {q:'Revelation ends the canon with…',a:'A renewed garden-city where Yah dwells with humanity',w:['A return to Egypt','An empty page']}]}
 ]},
-{emoji:'💎', color:'#9b6bd3', title:'Hidden Treasures',
+{emoji:'💎', color:'#9b6bd3', title:'Hidden Treasures', refs:[['The Book of Enoch','https://en.wikipedia.org/wiki/Book_of_Enoch'],['The Book of Jubilees','https://en.wikipedia.org/wiki/Book_of_Jubilees'],['Deuterocanonical books','https://en.wikipedia.org/wiki/Deuterocanonical_books']],
  blurb:'Enoch, Jubilees, Tobit, Judith, Maccabees, Meqabyan, and the wisdom voices most Bibles never printed.',
  lessons:[
  {t:'Chanoch (1 Enoch)', mins:5, secs:[
@@ -596,6 +609,7 @@ function renderStep(){
       <div class="secfoot">
         <button class="btn" onclick="stepNext()">${cur.step<nSecs-1?'Continue →':'To the questions →'}</button>
         <button class="listen" id="listenBtn">▷ Listen</button>
+        <button class="listen" id="moreBtn">✚ Learn more</button>
       </div></div>`;
   } else {
     const qi=cur.step-nSecs, Q=L.quiz[qi];
@@ -611,6 +625,8 @@ function renderStep(){
   $('v-lesson').innerHTML=h;
   const lb=$('listenBtn');
   if(lb){ const sec=L.secs[cur.step]; lb.onclick=()=>speak(sec.h+'. '+sec.t,lb); }
+  const mb=$('moreBtn');
+  if(mb){ const sec=L.secs[cur.step]; mb.onclick=()=>openMore(P,sec); }
   window.scrollTo({top:0});
 }
 function stepNext(){ sfx.tick(); cur.step++; renderStep(); }
@@ -771,6 +787,33 @@ function openLibrary(){
   });
   $('v-library').innerHTML=h; show('v-library');
 }
+
+function openMore(P,sec){
+  const wiki='https://en.wikipedia.org/wiki/Special:Search?search='+encodeURIComponent(sec.h);
+  const refs=(P.refs||[]).map(r=>'<a href="'+r[1]+'" target="_blank" rel="noopener" style="display:block;padding:10px 0;border-top:1px solid var(--line);font-weight:600;font-size:14px;text-decoration:none">'+r[0]+' ↗</a>').join('');
+  openModal('Go deeper: '+sec.h,
+    '<p>'+sec.t+'</p>'+
+    '<p style="margin-top:12px;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);font-weight:700">Keep pulling the thread</p>'+
+    '<a href="'+wiki+'" target="_blank" rel="noopener" style="display:block;padding:10px 0;border-top:1px solid var(--line);font-weight:600;font-size:14px;text-decoration:none">🔎 Search “'+sec.h+'” on Wikipedia ↗</a>'+refs+
+    '<p style="margin-top:12px;font-size:12.5px">Links open in a new tab — your lesson will be right here waiting.</p>');
+}
+
+/* ---- mobile bottom nav ---- */
+(function(){
+  const items=[['🏠','Home',()=>home(),'v-home']];
+  items.push(['⚔️',SITE.arenaName.split(' ')[0],()=>openArena(),'v-arena']);
+  if(typeof STUDIO!=='undefined'&&STUDIO)items.push(['🫁','Studio',()=>openStudio(),'v-studio']);
+  if(typeof LIBRARY!=='undefined'&&LIBRARY)items.push(['🏛','Library',()=>openLibrary(),'v-library']);
+  items.push(['⚙','Settings',()=>$('setBtn').click(),null]);
+  const nav=document.createElement('nav');nav.id='bnav';
+  nav.innerHTML=items.map((it,i)=>'<button data-v="'+(it[3]||'')+'"><span class="bi">'+it[0]+'</span>'+it[1]+'</button>').join('');
+  document.body.appendChild(nav);
+  nav.querySelectorAll('button').forEach((b,i)=>b.onclick=items[i][2]);
+})();
+const _show=show;
+show=function(id){ _show(id);
+  document.querySelectorAll('#bnav button').forEach(b=>b.classList.toggle('on',b.dataset.v===id||(id==='v-path'||id==='v-lesson')&&b.dataset.v==='v-home'));
+};
 
 /* ---- boot ---- */
 $('vtag').textContent=SITE.vtag;
