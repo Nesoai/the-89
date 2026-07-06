@@ -174,8 +174,11 @@ if(GA_ID){const s=document.createElement('script');s.async=true;s.src='https://w
   <div class="view" id="v-arena"></div>
   <div class="view" id="v-studio"></div>
   <div class="view" id="v-library"></div>
+  <div class="view" id="v-lex"></div>
+  <div class="view" id="v-people"></div>
+  <div class="view" id="v-map"></div>
 
-  <footer>The 89 · a Boundless learning studio · <span id="vtag">v1.1</span><br>
+  <footer>The 89 · a Boundless learning studio · <span id="vtag">v1.2</span><br>
   A study companion to the merged canon — Tanakh, Apocrypha, and the Ethiopian Orthodox Tewahedo tradition — using the names Yah and Yehoshua HaMashiach.</footer>
 </div>
 
@@ -558,6 +561,13 @@ function home(){
   if(typeof LIBRARY!=='undefined'&&LIBRARY) h+=`
     <div class="glass hover featurecard" onclick="openLibrary()">
       <span class="pemoji">🏛️</span><h3>${SITE.libraryName}</h3><p>${SITE.libraryDesc}</p></div>`;
+  h+=`
+    <div class="glass hover featurecard" onclick="openLex()">
+      <span class="pemoji">🔤</span><h3>The Lexicon</h3><p>Every term the scrolls assume you know — canon, covenant, Tewahedo, Selah — in plain words.</p></div>
+    <div class="glass hover featurecard" onclick="openPeople()">
+      <span class="pemoji">👥</span><h3>People of the 89</h3><p>The key figures across all 89 books — Hebrew names, English names, and who they were.</p></div>
+    <div class="glass hover featurecard" onclick="openMap()">
+      <span class="pemoji">🗺️</span><h3>The Map</h3><p>Tap the ancient world: where they lived, what happened there — plus a where-did-it-happen game.</p></div>`;
   h+=`</div>`;
   if(nla) h+=`<p style="color:var(--faint);font-size:13.5px;margin-top:26px">✦ ${nla-S.xp} XP to <b style="color:var(--dim)">${SITE.levels.find(x=>x[0]===nla)[1]}</b></p>`;
   $('v-home').innerHTML=h;
@@ -786,6 +796,234 @@ function openLibrary(){
     h+=`</div>`;
   });
   $('v-library').innerHTML=h; show('v-library');
+}
+
+/* ================= THE LEXICON ================= */
+const LEX=[
+['Canon','The official list of books a community holds as scripture. Different communities drew the line in different places — that is why 89 exists.'],
+['Tanakh','The Hebrew Bible: Torah (Law), Nevi\u2019im (Prophets), Ketuvim (Writings). The first letters spell T-N-K.'],
+['Torah','The five books of Moshe — Genesis through Deuteronomy. Also called the Law or Pentateuch.'],
+['Septuagint (LXX)','The Greek translation of the Hebrew scriptures (~250 BCE), which included books later called the Apocrypha. Early believers read this version.'],
+['Apocrypha','\u201CHidden\u201D books — works like Tobit, Judith, and Maccabees kept by Catholic, Orthodox, and Ethiopian canons but dropped by most Protestant Bibles.'],
+['Deuterocanonical','\u201CSecond canon\u201D — the polite name for the Apocrypha in traditions that keep those books as full scripture.'],
+['Pseudepigrapha','Ancient books written under a famous name (like Enoch). Most canons exclude them; the Ethiopian canon keeps several.'],
+['Tewahedo','\u201CMade one / unified\u201D in Ge\u2019ez — the Ethiopian Orthodox Church, keeper of the world\u2019s largest biblical canon (81 books).'],
+['Ge\u2019ez','The ancient Ethiopian language in which the Tewahedo canon is preserved — including the only complete Book of Enoch.'],
+['Covenant','A binding promise between Yah and people — with Noach, Avraham, Moshe, Dovid, and the new covenant in Yehoshua HaMashiach.'],
+['HaMashiach','\u201CThe Anointed One\u201D in Hebrew — Messiah. \u201CChrist\u201D is simply the Greek translation of the same word.'],
+['Prophet (Navi)','A person called to speak Yah\u2019s words to the people — often unwelcome ones. From Moshe to Yochanan the Immerser.'],
+['Exile','The deportations of Israel (by Assyria, 722 BCE) and Judah (by Babylon, 586 BCE). Much of the Bible was shaped by this wound.'],
+['Diaspora','The scattering of the Jewish people among the nations after the exiles — the world of Ester, Daniel, and Tobit.'],
+['Gentile','Anyone not of Israel. The letters of Sha\u2019ul wrestle with how the nations join the covenant family.'],
+['Gospel','\u201CGood news\u201D — the four accounts of Yehoshua HaMashiach\u2019s life, plus the message itself.'],
+['Epistle','Simply \u201Cletter.\u201D Twenty-two of the 89 books are letters to young communities.'],
+['Apocalypse','\u201CUnveiling\u201D — literature that pulls back the curtain on history\u2019s meaning (Daniel, Revelation, Enoch). Not primarily about catastrophe.'],
+['Passover (Pesach)','The night Yah spared Israel in Egypt and broke Pharaoh\u2019s grip — the exodus meal Yehoshua kept at the Last Supper.'],
+['Shabbat','The seventh-day rest woven into creation itself — a weekly declaration that the world does not run on human striving.'],
+['Temple','The house of Yah in Jerusalem: Shlomo\u2019s (destroyed 586 BCE), the second (destroyed 70 CE). Center of gravity for half the canon.'],
+['Ark of the Covenant','The gold-covered chest holding the tablets — Israel\u2019s throne-footstool of Yah. Ethiopian tradition holds it rests in Axum.'],
+['Cohen (Priest)','A descendant of Aharon serving in the sanctuary — offerings, blessing, and the Day of Atonement.'],
+['Levite','The tribe set apart to assist in worship — musicians, gatekeepers, teachers.'],
+['Pharisees & Sadducees','Two rival schools in Yehoshua\u2019s day: Pharisees (resurrection, oral tradition) and Sadducees (Temple aristocracy, Torah only).'],
+['Synagogue','The local gathering house for scripture and prayer that arose in exile — where Yehoshua and Sha\u2019ul both taught.'],
+['Manna','The bread-from-heaven that fed Israel forty years — daily, ungatherable in excess, a lesson in trust.'],
+['Jubilee','Every fiftieth year: debts released, land returned, captives freed (Leviticus 25). The economy of mercy.'],
+['Atonement (Kippur)','Covering and reconciling — the yearly Day of Atonement, and the language the letters use for the cross.'],
+['Halleluyah','\u201CPraise Yah!\u201D — the oldest worship word, hiding the Name in plain sight in every language on earth.'],
+['Amen','\u201CFirm, true, so be it\u201D — agreement you can stand on.'],
+['Selah','A mysterious pause-mark in the Psalms — probably \u201Cstop and let that land.\u201D'],
+['Maccabee','\u201CHammer\u201D — nickname of Yehudah, whose revolt (167 BCE) rededicated the Temple; the story behind Hanukkah, told in 1–2 Maccabees.'],
+['Zion','The hill of Jerusalem — and, in the prophets and psalms, shorthand for Yah\u2019s dwelling with His people.']
+];
+function openLex(){
+  let h=`<button class="back" onclick="home()">← Home</button>
+  <div class="pathhead"><span class="pemoji">🔤</span><div><h2>The Lexicon</h2><p>${LEX.length} terms, in plain words. Tap ▷ to hear one.</p></div></div>
+  <input id="lexQ" placeholder="Search terms…" style="width:100%;padding:13px 15px;font-size:15px;border-radius:12px;border:1px solid rgba(224,178,94,.25);background:rgba(255,255,255,.04);color:inherit;outline:none;margin-bottom:16px">
+  <div id="lexList"></div>`;
+  $('v-lex').innerHTML=h; show('v-lex');
+  const draw=q=>{ q=(q||'').toLowerCase();
+    $('lexList').innerHTML=LEX.filter(t=>!q||t[0].toLowerCase().includes(q)||t[1].toLowerCase().includes(q))
+      .map(t=>`<div class="glass" style="padding:16px 18px;margin-bottom:10px"><div style="display:flex;justify-content:space-between;gap:10px;align-items:baseline"><h3 style="margin:0;font-size:17px">${t[0]}</h3><button class="listen" onclick="speak('${t[0].replace(/'/g,"\\'")}. '+LEX.find(x=>x[0]==='${t[0].replace(/'/g,"\\'")}')[1],this)">▷</button></div><p style="margin:8px 0 0;color:var(--dim);font-size:14px;line-height:1.6">${t[1]}</p></div>`).join('')||'<p style="color:var(--faint)">No matches.</p>'; };
+  draw(); $('lexQ').oninput=e=>draw(e.target.value);
+}
+
+/* ================= PEOPLE OF THE 89 ================= */
+/* [Hebrew, English, who they were, where found] — the key figures; ~3,000 people are named across the 89 books, these are the ones the story turns on */
+const PEOPLE=[
+['Adam & Chavah','Adam & Eve','The first humans, formed in the garden; their choice opens the whole story','Genesis'],
+['Chanoch','Enoch','Walked with Yah and \u201Cwas not\u201D; the visionary of the fallen Watchers','Genesis · 1 Enoch'],
+['Noach','Noah','Built the ark; carried creation through the flood into a new covenant','Genesis'],
+['Avraham','Abraham','Left Ur on a promise; father of many nations, friend of Yah','Genesis'],
+['Sarah','Sarah','Laughed at the impossible and then named her son Laughter (Yitzchak)','Genesis'],
+['Hagar','Hagar','The servant who met Yah in the desert and named Him \u201CThe One Who Sees Me\u201D','Genesis'],
+['Yitzchak','Isaac','The promised son, bound on Moriah and spared','Genesis'],
+['Rivkah','Rebekah','Watered ten camels and changed history; mother of twins','Genesis'],
+['Yaakov / Yisrael','Jacob / Israel','Wrestled Yah at the Yabbok and limped away with a new name','Genesis'],
+['Leah & Rachel','Leah & Rachel','Sisters and rivals whose sons became the twelve tribes','Genesis'],
+['Yosef','Joseph','Sold by his brothers, raised to Egypt\u2019s right hand; \u201Cyou meant evil, Yah meant good\u201D','Genesis'],
+['Yehudah','Judah','The brother who offered himself; ancestor of kings and of HaMashiach','Genesis'],
+['Iyov','Job','The righteous sufferer who questioned Yah and was answered from the whirlwind','Job'],
+['Moshe','Moses','Drawn from the Nile, met Yah in fire, led the exodus, received the Torah','Exodus–Deuteronomy · Jubilees'],
+['Aharon','Aaron','Moshe\u2019s brother and voice; the first high priest','Exodus–Numbers'],
+['Miryam','Miriam','Prophetess who watched over the ark of reeds and led the sea-song','Exodus'],
+['Tzipporah','Zipporah','Midianite wife of Moshe, daughter of the priest Yitro','Exodus'],
+['Betzalel','Bezalel','The first person the Bible calls Spirit-filled — an artist building the sanctuary','Exodus'],
+['Yehoshua bin Nun','Joshua','Moshe\u2019s aide who led Israel across the Jordan into the land','Joshua'],
+['Rachav','Rahab','The woman of Jericho whose scarlet cord saved her house; ancestor of Dovid','Joshua'],
+['Devorah','Deborah','Judge and prophetess who commanded armies from beneath a palm tree','Judges'],
+['Gidon','Gideon','The least of the least, whose 300 routed an army with torches and trumpets','Judges'],
+['Shimshon','Samson','The strongman-judge whose strength and weakness were both legendary','Judges'],
+['Rut','Ruth','The Moabite who chose Naomi\u2019s people and Yah — great-grandmother of Dovid','Ruth'],
+['Chanah','Hannah','Prayed a son into being and gave him back; her song echoes in Miryam\u2019s (Mary\u2019s)','1 Samuel'],
+['Shmuel','Samuel','The boy who heard Yah in the night; last judge, kingmaker of Israel','1–2 Samuel'],
+['Shaul HaMelech','King Saul','Israel\u2019s first king — head above the crowd, heart that lost its way','1 Samuel'],
+['Dovid','David','Shepherd, psalmist, giant-slayer, king; \u201Ca man after Yah\u2019s own heart\u201D','1–2 Samuel · Psalms'],
+['Batsheva','Bathsheba','Wronged by a king, mother of the next one — Shlomo','2 Samuel'],
+['Natan','Nathan','The prophet brave enough to tell the king \u201Cyou are the man\u201D','2 Samuel'],
+['Shlomo','Solomon','Wisest of kings, builder of the Temple, author of proverbs and songs','1 Kings · Proverbs · Wisdom'],
+['Makeda','Queen of Sheba','The southern queen who tested Shlomo with hard questions — Ethiopia\u2019s mother-queen','1 Kings'],
+['Eliyahu','Elijah','Fire on Carmel, whisper at Horeb, chariot at the Jordan — the prophet who never died','1–2 Kings'],
+['Elisha','Elisha','Carried Eliyahu\u2019s mantle and a double portion of his spirit','2 Kings'],
+['Izevel','Jezebel','The queen who hunted prophets; her name became a warning','1–2 Kings'],
+['Chizkiyahu','Hezekiah','The king who spread a threat-letter before Yah — and saw an empire turn back','2 Kings · Isaiah'],
+['Yoshiyahu','Josiah','The boy-king who rediscovered the lost Torah scroll and reformed a nation','2 Kings'],
+['Yeshayahu','Isaiah','Prophet of the throne-vision and the Suffering Servant','Isaiah'],
+['Yirmeyahu','Jeremiah','The weeping prophet of the fall of Jerusalem — and of a new covenant','Jeremiah · Lamentations'],
+['Baruch','Baruch','Yirmeyahu\u2019s scribe, with a book of his own on the shelf','Baruch'],
+['Yechezkel','Ezekiel','Exile-prophet of wheels within wheels and the valley of dry bones','Ezekiel'],
+['Daniel','Daniel','Interpreter of dreams, survivor of lions, seer of kingdoms to come','Daniel'],
+['Chananyah, Mishael, Azaryah','Shadrach, Meshach, Abednego','Three exiles who walked in the furnace — with a fourth beside them','Daniel'],
+['Ester','Esther','The queen who risked \u201Cif I perish, I perish\u201D and saved her people','Esther'],
+['Mordechai','Mordecai','Ester\u2019s guardian who would not bow to Haman','Esther'],
+['Ezra','Ezra','Priest-scribe who carried the Torah back from Babylon','Ezra'],
+['Nechemyah','Nehemiah','Cupbearer turned wall-builder — sword in one hand, trowel in the other','Nehemiah'],
+['Yonah','Jonah','The prophet who ran, sank, was swallowed, and grudgingly saved a city','Jonah'],
+['Hoshea','Hosea','Married heartbreak to preach Yah\u2019s unreasonable faithfulness','Hosea'],
+['Amos','Amos','Shepherd of Tekoa: \u201Clet justice roll down like waters\u201D','Amos'],
+['Michah','Micah','\u201CDo justice, love mercy, walk humbly\u201D — and Beit Lechem foretold','Micah'],
+['Malachi','Malachi','The last Tanakh voice, promising Eliyahu before the great day','Malachi'],
+['Toviyah & Tovit','Tobias & Tobit','Father and son of the road — a fish, a demon, and the angel Refael in disguise','Tobit'],
+['Refael','Raphael','\u201CYah heals\u201D — the traveling-companion angel unveiled at journey\u2019s end','Tobit · 1 Enoch'],
+['Yehudit','Judith','The widow whose courage took off an invading general\u2019s head','Judith'],
+['Shoshanah','Susanna','Falsely accused, vindicated by young Daniel\u2019s cross-examination','Daniel additions'],
+['Yeshua ben Sira','Sirach','Jerusalem\u2019s wisdom teacher — the Proverbs of the second-temple age','Sirach'],
+['Yehudah HaMakabi','Judah Maccabee','The Hammer — retook and rededicated the Temple (Hanukkah)','1–2 Maccabees'],
+['Chanah & her seven sons','The Maccabean martyrs','A mother and seven brothers who chose death over betrayal — hope of resurrection','2 Maccabees'],
+['Miryam (em Yehoshua)','Mary, mother of Yehoshua','\u201CLet it be to me according to your word\u201D — the girl who carried HaMashiach','Gospels'],
+['Yosef (HaTzadik)','Joseph the carpenter','The quiet righteous man who sheltered a child not his own','Matthew · Luke'],
+['Yochanan HaMatbil','John the Immerser','Voice in the wilderness, forerunner in camel hair','Gospels'],
+['Yehoshua HaMashiach','Jesus the Messiah','The center of the whole shelf — teacher, healer, crucified and risen Lord','Gospels'],
+['Kefa','Peter','Fisherman, rock, denier, restored shepherd of the flock','Gospels · Acts · 1–2 Peter'],
+['Yochanan','John','The beloved disciple — gospel, letters, and the Patmos unveiling','John · 1–3 John · Revelation'],
+['Yaakov (achi HaAdon)','James, brother of the Lord','Leader of the Jerusalem assembly; faith that works','James · Acts'],
+['Miryam of Magdala','Mary Magdalene','Freed by Yehoshua; first witness of the resurrection','Gospels'],
+['Marta & Miryam','Martha & Mary of Bethany','Two sisters, two postures — busy hands and listening feet','Luke · John'],
+['Sha\u2019ul / Paulus','Paul','Persecutor turned apostle to the nations; author of thirteen letters','Acts · Epistles'],
+['Barnaba','Barnabas','\u201CSon of encouragement\u201D who vouched for Sha\u2019ul when no one else would','Acts'],
+['Timoteus','Timothy','Sha\u2019ul\u2019s son-in-the-faith, pastor of Ephesus','1–2 Timothy'],
+['Lydia','Lydia','Dealer in purple cloth — first believer of Europe, host of the Philippi church','Acts'],
+['Priscilla & Aquila','Priscilla & Aquila','Tentmaking couple who taught the eloquent Apollos the fuller way','Acts · Romans'],
+['Stefanos','Stephen','First martyr — face like an angel, prayer like his Master\u2019s','Acts'],
+['Felipe','Philip the evangelist','Explained Yeshayahu to the Ethiopian official on the Gaza road','Acts'],
+['HaSaris HaKushi','The Ethiopian official','Treasurer of Kandake\u2019s court, baptized on the desert road — the gospel reaches Cush','Acts']
+];
+function openPeople(){
+  let h=`<button class="back" onclick="home()">← Home</button>
+  <div class="pathhead"><span class="pemoji">👥</span><div><h2>People of the 89</h2><p>${PEOPLE.length} key figures. (Roughly 3,000 people are named across the 89 books — these are the ones the story turns on. Want someone added? They\u2019re a message away.)</p></div></div>
+  <input id="pplQ" placeholder="Search a name (Hebrew or English)…" style="width:100%;padding:13px 15px;font-size:15px;border-radius:12px;border:1px solid rgba(224,178,94,.25);background:rgba(255,255,255,.04);color:inherit;outline:none;margin-bottom:16px">
+  <div id="pplList" class="grid"></div>`;
+  $('v-people').innerHTML=h; show('v-people');
+  const draw=q=>{ q=(q||'').toLowerCase();
+    $('pplList').innerHTML=PEOPLE.filter(p=>!q||p[0].toLowerCase().includes(q)||p[1].toLowerCase().includes(q)||p[2].toLowerCase().includes(q))
+      .map(p=>`<div class="glass pathcard" style="cursor:default"><h3 style="margin:0;font-size:17px">${p[0]}</h3><div class="meta" style="margin:3px 0 8px">${p[1]} · ${p[3]}</div><p style="min-height:0;margin:0">${p[2]}</p></div>`).join('')||'<p style="color:var(--faint)">No matches.</p>'; };
+  draw(); $('pplQ').oninput=e=>draw(e.target.value);
+}
+
+/* ================= THE MAP ================= */
+const PLACES=[
+{id:'rome',x:52,y:128,n:'Rome',who:'Sha\u2019ul, the early assembly',what:'Capital of the empire. Sha\u2019ul wrote his greatest letter TO here and later arrived in chains — preaching openly under guard.'},
+{id:'corinth',x:142,y:182,n:'Corinth',who:'Sha\u2019ul, Priscilla & Aquila',what:'Wealthy, chaotic port city. Eighteen months of tentmaking and teaching; two blunt, loving letters followed.'},
+{id:'patmos',x:190,y:208,n:'Patmos',who:'Yochanan',what:'Prison island where heaven opened — the Revelation was seen and sent to seven churches.'},
+{id:'ephesus',x:208,y:186,n:'Ephesus',who:'Sha\u2019ul, Timoteus, Yochanan',what:'Temple city of Artemis. A riot, a two-year school, a young pastor, and the first of the seven letters.'},
+{id:'antioch',x:322,y:172,n:'Antioch',who:'Barnaba & Sha\u2019ul',what:'The launchpad. Believers were first called \u201CChristians\u201D here, and every mission journey started from this city.'},
+{id:'damascus',x:342,y:222,n:'Damascus',who:'Sha\u2019ul, Chananyah',what:'On the road here a light knocked a persecutor down — and a hesitant disciple prayed his sight back.'},
+{id:'galilee',x:315,y:252,n:'Galilee & Nazareth',who:'Yehoshua HaMashiach, the Twelve',what:'Hometown hills and a working lake: most of the teaching, healing, and storm-calming happened here.'},
+{id:'jericho',x:326,y:284,n:'Jericho',who:'Yehoshua bin Nun, Rachav, Zakkai',what:'Walls that fell to trumpets; a scarlet cord in a window; a tax collector up a tree.'},
+{id:'jerusalem',x:306,y:294,n:'Jerusalem',who:'Dovid, Shlomo, Yehoshua HaMashiach',what:'The city at the center: Dovid\u2019s throne, two Temples, the cross and the empty tomb, Pentecost, and the Revelation\u2019s final vision.'},
+{id:'beitlechem',x:296,y:312,n:'Beit Lechem',who:'Rut, Dovid, Yehoshua',what:'\u201CHouse of Bread.\u201D Rut gleaned here, Dovid was anointed here, and Michah\u2019s prophecy came true in a manger.'},
+{id:'egypt',x:236,y:360,n:'Egypt (Goshen)',who:'Yosef, Moshe, the child Yehoshua',what:'Granary, refuge, and furnace: Yosef ruled here, Israel was enslaved here, and the exodus broke Pharaoh\u2019s grip.'},
+{id:'sinai',x:282,y:396,n:'Mount Sinai',who:'Moshe, Israel, Eliyahu',what:'Fire, smoke, and ten words on stone — the covenant mountain, where Eliyahu later heard the whisper.'},
+{id:'cush',x:302,y:466,n:'Cush / Ethiopia',who:'Makeda, the Ethiopian official',what:'The southern kingdom: Sheba\u2019s queen tested Shlomo, and a court treasurer carried the gospel home — seedbed of the Tewahedo church that kept all 81 books.'},
+{id:'ararat',x:428,y:118,n:'Mount Ararat',who:'Noach',what:'Where the ark came to rest and a rainbow sealed the first covenant with all living things.'},
+{id:'haran',x:398,y:170,n:'Haran',who:'Avraham, Yaakov',what:'Way-station of the patriarchs: Avraham paused here on the way to promise; Yaakov found wives and trouble here.'},
+{id:'nineveh',x:494,y:206,n:'Nineveh',who:'Yonah, Nachum, Tovit',what:'Assyria\u2019s dread capital — the city Yonah didn\u2019t want saved, and the exile home of Tovit\u2019s family.'},
+{id:'babylon',x:516,y:288,n:'Babylon',who:'Daniel, Yechezkel, Baruch',what:'The empire of exile: furnaces and lions, dry-bones visions, and the writing on the wall.'},
+{id:'ur',x:556,y:326,n:'Ur of the Chaldees',who:'Avraham',what:'Where the whole journey began — one family leaving the world\u2019s greatest city on nothing but a voice.'},
+{id:'shushan',x:596,y:280,n:'Shushan (Susa)',who:'Ester, Mordechai, Nechemyah',what:'Persia\u2019s winter palace: a beauty contest with an empire at stake, and a cupbearer\u2019s prayer for a ruined wall.'}
+];
+let MQ=null;
+function drawMap(activeId){
+  const dots=PLACES.map(p=>`
+    <g class="mapdot" data-id="${p.id}" style="cursor:pointer">
+      <circle cx="${p.x}" cy="${p.y}" r="10" fill="rgba(224,178,94,.12)"/>
+      <circle cx="${p.x}" cy="${p.y}" r="${activeId===p.id?6.5:4.5}" fill="${activeId===p.id?'#e0b25e':'#c96f43'}" stroke="#1a120a" stroke-width="1.5"/>
+      <text x="${p.x}" y="${p.y-13}" text-anchor="middle" font-size="11" fill="${activeId===p.id?'#e0b25e':'rgba(240,225,200,.75)'}" style="font-weight:${activeId===p.id?700:500};pointer-events:none">${p.n.split(' (')[0].split(' &')[0]}</text>
+    </g>`).join('');
+  return `<svg viewBox="0 0 700 500" style="width:100%;height:auto;display:block;border-radius:16px;background:#101820">
+    <path d="M0,90 Q120,70 210,110 Q260,135 250,200 Q245,260 290,300 Q310,318 300,345 Q250,330 190,300 Q90,265 30,290 L0,300 Z" fill="#17222e"/>
+    <path d="M0,90 L0,0 L700,0 L700,500 L0,500 L0,300 L30,290 Q90,265 190,300 Q250,330 300,345 Q310,318 290,300 Q245,260 250,200 Q260,135 210,110 Q120,70 0,90 Z" fill="#241a10"/>
+    <path d="M300,345 Q320,380 310,430 Q305,460 315,500 L360,500 Q350,430 345,380 Q340,350 330,340 Z" fill="#17222e" opacity=".85"/>
+    <path d="M430,150 Q470,200 510,240 Q540,270 560,320" stroke="#17222e" stroke-width="7" fill="none" opacity=".8"/>
+    <path d="M470,140 Q520,190 545,250 Q565,290 585,330" stroke="#17222e" stroke-width="6" fill="none" opacity=".7"/>
+    <text x="120" y="200" font-size="13" fill="rgba(120,160,190,.5)" font-style="italic">The Great Sea</text>
+    <text x="480" y="180" font-size="11" fill="rgba(120,160,190,.45)" font-style="italic" transform="rotate(38 480 180)">Tigris &amp; Euphrates</text>
+    <text x="318" y="428" font-size="11" fill="rgba(120,160,190,.45)" font-style="italic" transform="rotate(75 318 428)">Nile</text>
+    ${dots}</svg>`;
+}
+function openMap(){
+  MQ=null;
+  let h=`<button class="back" onclick="home()">← Home</button>
+  <div class="pathhead"><span class="pemoji">🗺️</span><div><h2>The Map of the 89</h2><p>A storyteller\u2019s map, not a surveyor\u2019s — tap any place.</p></div></div>
+  <div id="mapBox">${drawMap()}</div>
+  <div id="mapInfo" class="glass" style="padding:16px 18px;margin-top:14px"><p style="margin:0;color:var(--dim)">Tap a golden dot to see who lived there and what happened.</p></div>
+  <button class="btn big" style="margin-top:14px" onclick="startMapQuiz()">🎯 Play: Where did it happen?</button>`;
+  $('v-map').innerHTML=h; show('v-map'); wireMap();
+}
+function wireMap(){
+  document.querySelectorAll('#mapBox .mapdot').forEach(g=>g.onclick=()=>{
+    const p=PLACES.find(x=>x.id===g.dataset.id);
+    if(MQ){ mapGuess(p); return; }
+    $('mapBox').innerHTML=drawMap(p.id); wireMap();
+    $('mapInfo').innerHTML=`<h3 style="margin:0 0 4px;font-size:18px">${p.n}</h3><div class="meta" style="margin-bottom:8px">${p.who}</div><p style="margin:0;line-height:1.65">${p.what}</p>
+      <button class="listen" style="margin-top:10px" onclick="speak('${p.n.replace(/'/g,"\\'")}. '+PLACES.find(x=>x.id==='${p.id}').what,this)">▷ Listen</button>`;
+  });
+}
+function startMapQuiz(){
+  const order=[...PLACES].sort(()=>Math.random()-.5).slice(0,8);
+  MQ={order,i:0,score:0};
+  mapAsk();
+}
+function mapAsk(){
+  const p=MQ.order[MQ.i];
+  $('mapBox').innerHTML=drawMap(); wireMap();
+  $('mapInfo').innerHTML=`<div class="meta">Round ${MQ.i+1} of ${MQ.order.length} · score ${MQ.score}</div>
+    <h3 style="margin:6px 0 4px;font-size:17px">Where did this happen? Tap the spot:</h3>
+    <p style="margin:0;line-height:1.6">${p.what.split('.')[0]}. <i style="color:var(--faint)">(${p.who})</i></p>`;
+}
+function mapGuess(guess){
+  const p=MQ.order[MQ.i];
+  if(guess.id===p.id){ MQ.score++; S.xp+=10; save(); chips();
+    $('mapInfo').innerHTML=`<h3 style="margin:0;color:#7fc98f">✓ ${p.n} — exactly right. ✦ +10</h3>`; }
+  else $('mapInfo').innerHTML=`<h3 style="margin:0;color:#d98a6a">✗ That\u2019s ${guess.n} — it was <b>${p.n}</b>.</h3>`;
+  $('mapBox').innerHTML=drawMap(p.id); wireMap();
+  MQ.i++;
+  setTimeout(()=>{ if(!MQ)return;
+    if(MQ.i>=MQ.order.length){
+      $('mapInfo').innerHTML=`<h3 style="margin:0 0 6px">🏁 ${MQ.score} of ${MQ.order.length}!</h3><p style="margin:0;color:var(--dim)">${MQ.score>=7?'You could guide the caravans yourself.':MQ.score>=4?'The roads are becoming familiar.':'Every pilgrim starts somewhere — walk the map and run it back.'}</p>
+        <button class="btn big" style="margin-top:12px" onclick="startMapQuiz()">Run it back →</button>`;
+      MQ=null; $('mapBox').innerHTML=drawMap(); wireMap();
+    } else mapAsk();
+  },1600);
 }
 
 function openMore(P,sec){
