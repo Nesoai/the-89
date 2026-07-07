@@ -177,8 +177,9 @@ if(GA_ID){const s=document.createElement('script');s.async=true;s.src='https://w
   <div class="view" id="v-lex"></div>
   <div class="view" id="v-people"></div>
   <div class="view" id="v-map"></div>
+  <div class="view" id="v-moedim"></div>
 
-  <footer>The 89 · a Boundless learning studio · <span id="vtag">v1.4</span> · © 2026 Boundless / Mallory Bailey-Finkley — all rights reserved<br>
+  <footer>The 89 · a Boundless learning studio · <span id="vtag">v1.5</span> · © 2026 Boundless / Mallory Bailey-Finkley — all rights reserved<br>
   A study companion to the merged canon — Tanakh, Apocrypha, and the Ethiopian Orthodox Tewahedo tradition — using the names Yah and Yehoshua HaMashiach.</footer>
 </div>
 
@@ -567,7 +568,9 @@ function home(){
     <div class="glass hover featurecard" onclick="openPeople()">
       <span class="pemoji">👥</span><h3>People of the 89</h3><p>The key figures across all 89 books — Hebrew names, English names, and who they were.</p></div>
     <div class="glass hover featurecard" onclick="openMap()">
-      <span class="pemoji">🗺️</span><h3>The Map</h3><p>Tap the ancient world: where they lived, what happened there — plus a where-did-it-happen game.</p></div>`;
+      <span class="pemoji">🗺️</span><h3>The Map</h3><p>Tap the ancient world: where they lived, what happened there — plus a where-did-it-happen game.</p></div>
+    <div class="glass hover featurecard" onclick="openMoedim()">
+      <span class="pemoji">🕯️</span><h3>The Appointed Times</h3><p>The feasts of the 89 — what's coming in the next four weeks, and what each one means, why it's kept, and how.</p></div>`;
   h+=`</div>`;
   if(nla) h+=`<p style="color:var(--faint);font-size:13.5px;margin-top:26px">✦ ${nla-S.xp} XP to <b style="color:var(--dim)">${SITE.levels.find(x=>x[0]===nla)[1]}</b></p>`;
   $('v-home').innerHTML=h;
@@ -1024,6 +1027,88 @@ function mapGuess(guess){
       MQ=null; $('mapBox').innerHTML=drawMap(); wireMap();
     } else mapAsk();
   },1600);
+}
+
+/* ================= THE APPOINTED TIMES (MOEDIM) ================= */
+/* Dates = daytime Gregorian date(s); biblical days begin at sundown the evening before. */
+const MOEDIM=[
+{n:'Shabbat',heb:'\u05E9\u05B7\u05C1\u05D1\u05B8\u05BC\u05EA',weekly:true,refs:'Genesis 2 · Exodus 20 · Leviticus 23:3 · Mark 2',
+ what:'The seventh-day rest — the first thing in all scripture ever called holy, and the only appointed time that comes every single week.',
+ why:'Because Yah rested and blessed the seventh day at creation, and because a freed people needed to remember weekly that they are no longer slaves. Yehoshua called himself Lord of the Shabbat — and called it a gift made for people.',
+ how:'From Friday sundown to Saturday sundown: stop striving. A shared meal, candles in many homes, scripture, gathering, gratitude, no ordinary labor. The rhythm is the point — the world keeps turning without your grip on it.'},
+{n:'Pesach (Passover) & Unleavened Bread',heb:'\u05E4\u05B6\u05BC\u05E1\u05B7\u05D7',dates:[['2026-04-02',7],['2027-04-22',7]],refs:'Exodus 12 · Leviticus 23:5–8 · Luke 22 · 1 Corinthians 5',
+ what:'The night Yah passed over Israel and broke Egypt\u2019s grip, followed by seven days of bread without leaven.',
+ why:'It is the founding memory of redemption — every generation retells it as if they themselves walked out. The gospels place the Last Supper at this table: Yehoshua kept Pesach and filled it with new meaning.',
+ how:'A seder meal on the first evening — lamb, bitter herbs, matzah, four cups, and the telling of the exodus story with children asking the questions. Then a week with leaven cleared from the house: a spring-cleaning of the heart as much as the pantry.'},
+{n:'Bikkurim (Firstfruits)',heb:'\u05D1\u05B4\u05BC\u05DB\u05BC\u05D5\u05BC\u05E8\u05B4\u05D9\u05DD',dates:[['2026-04-03',1],['2027-04-23',1]],refs:'Leviticus 23:9–14 · 1 Corinthians 15:20',
+ what:'The first sheaf of the barley harvest, lifted before Yah during Unleavened Bread.',
+ why:'Trust in seed form: giving the FIRST of the harvest before knowing the rest will come. The letters call the risen Yehoshua \u201Cthe firstfruits of those who sleep\u201D — this feast is the resurrection\u2019s own vocabulary.',
+ how:'Traditionally the wave-offering of the sheaf; today, many mark it by giving first — the first of a paycheck, the first of a harvest, the first hour of a day — as a declaration about where provision comes from.'},
+{n:'Shavuot (Weeks / Pentecost)',heb:'\u05E9\u05B8\u05C1\u05D1\u05D5\u05BC\u05E2\u05D5\u05B9\u05EA',dates:[['2026-05-22',1],['2027-06-11',1]],refs:'Leviticus 23:15–22 · Exodus 19 · Ruth · Acts 2',
+ what:'Fifty days counted from Firstfruits — the wheat-harvest feast, remembered as the day Torah was given at Sinai.',
+ why:'Sinai and Pentecost mirror each other on this same day: fire, wind, and Yah\u2019s word arriving — first on stone tablets, then, in Acts 2, on hearts in every language. Ruth is read because a Moabite gleaning a Shavuot harvest joined the covenant people.',
+ how:'All-night scripture study in many communities, the book of Ruth, dairy foods by tradition, and the counting of the fifty days (the Omer) building anticipation from Pesach to this day.'},
+{n:'Yom Teruah (Day of Trumpets)',heb:'\u05D9\u05D5\u05B9\u05DD \u05EA\u05B8\u05BC\u05E8\u05D5\u05BC\u05E2\u05B8\u05D4',dates:[['2026-09-12',2],['2027-10-02',2]],refs:'Leviticus 23:23–25 · Numbers 29 · 1 Thessalonians 4:16',
+ what:'A day of shofar blasts opening the seventh month — the head of the civil year (Rosh Hashanah).',
+ why:'The trumpet is scripture\u2019s wake-up call: remember, gather, prepare — ten \u201Cdays of awe\u201D of self-examination follow, leading to Yom Kippur. The letters borrow this very image for the last trumpet.',
+ how:'Hearing the shofar blown, sweet foods (apples in honey) for a sweet year, and tashlich — casting breadcrumbs into moving water as a picture of sins carried away.'},
+{n:'Yom Kippur (Day of Atonement)',heb:'\u05D9\u05D5\u05B9\u05DD \u05DB\u05B4\u05BC\u05E4\u05BC\u05D5\u05BC\u05E8',dates:[['2026-09-21',1],['2027-10-11',1]],refs:'Leviticus 16 · Leviticus 23:26–32 · Isaiah 58 · Hebrews 9',
+ what:'The holiest day of the year — the one day the high priest entered the Most Holy Place to cover the people\u2019s sin.',
+ why:'It answers the deepest question — how can a flawed people live near a holy Yah? Hebrews reads the whole day as the pattern Yehoshua fulfilled, entering once for all. Isaiah 58 insists the fast Yah chooses is also justice: freeing the oppressed, feeding the hungry.',
+ how:'A full sundown-to-sundown fast, white garments, confession, and the books of Leviticus 16 and Jonah. The day closes with one long shofar blast — and, traditionally, joy: the slate is clean.'},
+{n:'Sukkot (Tabernacles) & Shemini Atzeret',heb:'\u05E1\u05BB\u05DB\u05BC\u05D5\u05B9\u05EA',dates:[['2026-09-26',8],['2027-10-16',8]],refs:'Leviticus 23:33–43 · Nehemiah 8 · Zechariah 14 · John 7',
+ what:'Seven days living in leafy temporary shelters, plus an eighth day of solemn assembly — the great autumn harvest feast, \u201Cthe season of our joy.\u201D',
+ why:'It rehearses the wilderness years, when Israel lived in booths and Yah\u2019s presence lived in one too. Zechariah sees all nations keeping it; John places Yehoshua at its water-pouring ceremony crying \u201Cif anyone thirsts, come to me.\u201D',
+ how:'Build a sukkah — a hut with a roof loose enough to see stars — and eat (some sleep) in it for a week; wave the four species (palm, myrtle, willow, citron); invite guests. Fragile walls, full table: the whole theology in one backyard.'},
+{n:'Hanukkah (Dedication)',heb:'\u05D7\u05B2\u05E0\u05BB\u05DB\u05B8\u05BC\u05D4',dates:[['2026-12-05',8],['2027-12-25',8]],refs:'1 Maccabees 4 · 2 Maccabees 10 · John 10:22',
+ what:'Eight nights of lights remembering the Temple\u2019s rededication after Yehudah HaMakabi\u2019s revolt (164 BCE) — a feast whose founding story lives INSIDE the 89, in the books of Maccabees.',
+ why:'A handful of faithful families refused to let the covenant be erased, retook the defiled Temple, and lit its lamp again. John 10 shows Yehoshua walking the Temple courts at this very feast.',
+ how:'One more candle on the hanukkiah each night for eight nights, placed in a window — publishing the miracle. Foods fried in oil (latkes, sufganiyot), dreidel games, and the Maccabees\u2019 story retold.'},
+{n:'Purim (Lots)',heb:'\u05E4\u05BC\u05D5\u05BC\u05E8\u05B4\u05D9\u05DD',dates:[['2027-03-23',1],['2028-03-12',1]],refs:'Esther 9 · (Greek Esther additions)',
+ what:'The carnival feast of the book of Ester — the day the lot cast for Israel\u2019s destruction flipped into deliverance.',
+ why:'Because courage in a palace (\u201Cif I perish, I perish\u201D) saved a people, and because Yah\u2019s hand moves even in a book that never says His name aloud.',
+ how:'The whole scroll of Ester read aloud — with noisemakers drowning out Haman\u2019s name — costumes, gifts of food to friends (mishloach manot), and gifts to the poor, which the scroll itself commands.'}
+];
+function nextShabbat(from){ const d=new Date(from); const day=d.getDay(); const diff=(6-day+7)%7; const s2=new Date(d); s2.setDate(d.getDate()+diff); return s2; }
+function moedUpcoming(){
+  const now=new Date(); now.setHours(0,0,0,0);
+  const out=[];
+  const sh=nextShabbat(now); out.push({m:MOEDIM[0],start:sh,days:1});
+  MOEDIM.slice(1).forEach(m=>{ (m.dates||[]).forEach(dt=>{
+    const st=new Date(dt[0]+'T00:00:00'); const en=new Date(st); en.setDate(st.getDate()+dt[1]-1);
+    if(en>=now) out.push({m,start:st,days:dt[1],ongoing:st<=now});
+  });});
+  const seen=new Set(); const ded=[];
+  out.sort((a,b)=>a.start-b.start).forEach(x=>{ if(!seen.has(x.m.n)){seen.add(x.m.n);ded.push(x);} });
+  return ded;
+}
+function fdate(d,days){ const o={month:'short',day:'numeric'}; const s=d.toLocaleDateString('en-US',o);
+  if(days>1){const e=new Date(d); e.setDate(d.getDate()+days-1); return s+' – '+e.toLocaleDateString('en-US',o)+', '+e.getFullYear();}
+  return s+', '+d.getFullYear();}
+function openMoedim(){
+  const now=new Date(); now.setHours(0,0,0,0);
+  const up=moedUpcoming();
+  const soon=up.filter(x=>(x.start-now)/86400000<=28);
+  let h=`<button class="back" onclick="home()">← Home</button>
+  <div class="pathhead"><span class="pemoji">🕯️</span><div><h2>The Appointed Times</h2><p>The feasts woven through the 89 — each day begins at sundown the evening before.</p></div></div>`;
+  h+=`<div class="glass" style="padding:18px;margin-bottom:16px;border:1px solid rgba(224,178,94,.35)">
+    <h3 style="margin:0 0 10px;font-size:16px">🌅 Within the next four weeks</h3>`;
+  if(soon.length){ soon.forEach(x=>{ const dd=Math.round((x.start-now)/86400000);
+    h+=`<p style="margin:6px 0;font-size:14px"><b>${x.m.n}</b> — ${x.ongoing?'happening now':dd===0?'today':dd===1?'tomorrow':'in '+dd+' days'} · ${fdate(x.start,x.days)}${x.m.weekly?' (and every week)':''}</p>`; }); }
+  else h+=`<p style="margin:0;font-size:14px;color:var(--dim)">No annual feast falls in the next four weeks — but Shabbat never misses. The next annual appointed time is <b>${up.find(x=>!x.m.weekly).m.n}</b>, ${fdate(up.find(x=>!x.m.weekly).start, up.find(x=>!x.m.weekly).days)}.</p>`;
+  h+=`</div>`;
+  up.forEach(x=>{ const m=x.m;
+    h+=`<div class="glass" style="padding:18px;margin-bottom:12px">
+      <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:baseline">
+        <h3 style="margin:0;font-size:17px">${m.n} <span style="color:var(--faint);font-size:14px">${m.heb}</span></h3>
+        <span style="font-size:12.5px;color:#e0b25e;font-weight:600">${m.weekly?'Every Friday sundown → Saturday sundown':fdate(x.start,x.days)}</span></div>
+      <p style="margin:9px 0 0;font-size:14px;line-height:1.65"><b>What it is:</b> ${m.what}</p>
+      <p style="margin:8px 0 0;font-size:14px;line-height:1.65"><b>Why it\u2019s kept:</b> ${m.why}</p>
+      <p style="margin:8px 0 0;font-size:14px;line-height:1.65"><b>How it\u2019s observed:</b> ${m.how}</p>
+      <div class="meta" style="margin-top:9px">${m.refs} <button class="listen" style="margin-left:8px" onclick="speak('${m.n.replace(/'/g,"\\'")}. '+MOEDIM.find(z=>z.n==='${m.n.replace(/'/g,"\\'")}').what,this)">▷</button></div></div>`;
+  });
+  h+=`<p style="font-size:11.5px;color:var(--faint);line-height:1.6;margin-top:14px">Dates follow the widely used Hebrew calendar; days begin at the previous sundown, and some communities (sighted-moon reckonings, the Ethiopian church) count differently — confirm locally before you set the table.</p>`;
+  $('v-moedim').innerHTML=h; show('v-moedim');
 }
 
 function openMore(P,sec){
